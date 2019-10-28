@@ -1,0 +1,204 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package CargaDatosExcel;
+
+import Abstractos.MetodosCarga;
+import Constantes.Constantes;
+import static Constantes.Constantes.Capacidad_Vehiculo;
+import static Constantes.Constantes.Nodos_Con_Ahorro;
+import static Constantes.Constantes.Volumen_Vehiculo;
+import Exception.NewExceptionExcel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+/**
+ *
+ * @author David
+ */
+public final class MetodosExcelImp implements MetodosCarga {
+
+    private String file;
+    private MetodosCargaImp datos;
+    private FileInputStream files;
+    private XSSFWorkbook wb;
+    private String nombreDelDia;
+    private String nombreVariable;
+    private boolean entreProvedores = true;
+    private int ContadorDia = 0;
+    private NewExceptionExcel newExceptionExcel;
+
+    public MetodosExcelImp(String file) throws NewExceptionExcel {
+        newExceptionExcel = new NewExceptionExcel();
+        try {
+            this.file = file;
+            IniciarLecturaExcel();
+        } catch (Exception e) {
+            datos.setError("1");
+            throw newExceptionExcel;
+        }
+
+    }
+
+    public MetodosExcelImp() {
+    }
+
+    private void IniciarLecturaExcel() throws NewExceptionExcel {
+        datos = MetodosCargaImp.getInstance();
+        VerificarArchivoExcel();
+        Leer();
+        try {
+            files.close();
+            //Crear();
+        } catch (IOException e) {
+            datos.setError("3");
+            throw newExceptionExcel;
+        }
+    }
+
+    private void VerificarArchivoExcel() throws NewExceptionExcel {
+        try {
+            files = new FileInputStream(new File(file));
+            wb = new XSSFWorkbook(files);
+        } catch (FileNotFoundException ex) {
+            datos.setError("1");
+            throw newExceptionExcel;
+        } catch (IOException ex) {
+            datos.setError("1");
+            throw newExceptionExcel;
+        }
+    }
+
+    @Override
+    public void Leer() {
+        XSSFSheet sheet = wb.getSheetAt(0);
+        int numFilas = sheet.getLastRowNum();
+        for (int x = 1; x <= numFilas; x++) {
+            Row fila = sheet.getRow(x);
+            int numCols = fila.getLastCellNum();
+            if (datos.getNumeroProvedores() == 0 && x == 1) {
+                datos.setNumeroProvedores(numCols - 3);
+            }
+            ArrayList<Double> a = new ArrayList<>();
+            for (int y = 0, j = 0; y < numCols; y++) {
+                Cell celda = fila.getCell(y);
+                if (!(celda == null)) {
+                    switch (celda.getCellTypeEnum().toString()) {
+                        case "NUMERIC": {
+                            if (datos.getPesoVolProvedores().containsKey(nombreDelDia)) {
+                                a = datos.getPesoVolProvedores().get(nombreDelDia).get(nombreVariable);
+                                a.add(celda.getNumericCellValue());
+                                datos.getPesoVolProvedores().get(nombreDelDia).put(nombreVariable, a);
+                            } else {
+                                if (entreProvedores) {
+                                    datos.arregloMatriz(datos.getNumeroProvedores() + 1);
+                                    entreProvedores = false;
+                                }
+                                datos.getDistancias()[j][x - 2] = celda.getNumericCellValue();
+                                j++;
+                            }
+                            System.out.print(celda.getNumericCellValue() + " ");
+                            break;
+                        }
+                        case "STRING": {
+                            for (String v : datos.getVariablesNombresExcel()) {
+                                if (celda.getStringCellValue().contains(v)) {
+                                    switch (v) {
+                                        case "Dia": {
+                                            ContadorDia += 1;
+                                            String vi = v + String.valueOf(ContadorDia);
+                                            datos.getPesoVolProvedores().put(vi, new HashMap<>());
+                                            nombreDelDia = vi;
+                                            break;
+                                        }
+                                        case Constantes.Demanda_kg: {
+                                            datos.getPesoVolProvedores().get(nombreDelDia).put(v, new ArrayList<>());
+                                            nombreVariable = v;
+                                            break;
+                                        }
+                                        case Constantes.Volumen: {
+                                            datos.getPesoVolProvedores().get(nombreDelDia).put(v, new ArrayList<>());
+                                            nombreVariable = v;
+                                            break;
+                                        }
+                                        default: {
+                                            System.out.println("Error de carga");
+                                        }
+                                    }
+
+                                }
+                            }
+                            System.out.print(celda.getStringCellValue() + " ");
+                            break;
+                        }
+                        default: {
+
+                        }
+
+                    }
+                }
+            }
+            System.out.println("");
+        }
+        //System.out.println(Arrays.toString(datos.getDistancias()));
+    }
+
+    @Override
+    public void Crear() {
+        int filas = -1;
+        int columnas = -1;
+        datos = MetodosCargaImp.getInstance();
+        Workbook book = new XSSFWorkbook();
+        Sheet sheet = book.createSheet("Resultado");
+
+        // Row row = sheet.createRow(sheet.addMergedRegion(new CellRangeAddress(0,0,0,10)));       
+        filas++;
+        Row row = sheet.createRow(filas);
+        columnas++;
+        row.createCell(columnas).setCellValue("Secuencia");
+        for (int c = 1; c <= datos.getImprimirNodos().size(); c++) {
+            filas++;
+            Row dia = sheet.createRow(filas);
+            columnas++;
+            dia.createCell(columnas).setCellValue("Dia" + (c));
+//            for (int i = 0; i < datos.getImprimirNodos().get("Dia" + (c)).get(Constantes.Nodos_Con_Ahorro).size(); i++) {
+//                Row rown = sheet.createRow(filas++);
+//                rown.createCell(columnas++).setCellValue("Ruta" + (i));
+////                for (int y = 0; y < datos.getImprimirNodos().get(Constantes.Nodos_Con_Ahorro).get(0).size(); y++) {
+////                    rown.createCell(y + 1).setCellValue(datos.getImprimirNodos().get(Constantes.Nodos_Con_Ahorro).get(0).get(y));
+////                    rown.createCell(y + 2).setCellValue(datos.getImprimirNodos().get(Constantes.Nodos_Con_Ahorro).get(1).get(y));
+////                }
+//            }
+        }
+
+        try {
+            FileOutputStream fileout = new FileOutputStream("Excel.xlsx");
+            book.write(fileout);
+            fileout.close();
+        } catch (FileNotFoundException ex) {
+            newExceptionExcel.CrearExcel("1");
+        } catch (IOException ex) {
+            newExceptionExcel.CrearExcel("1");
+        }
+
+    }
+
+}
+
+
+//command
