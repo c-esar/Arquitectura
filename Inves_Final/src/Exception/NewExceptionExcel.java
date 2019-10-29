@@ -5,7 +5,7 @@
  */
 package Exception;
 
-import CargaDatosExcel.MetodosCargaImp;
+import CargaDatosExcel.AtributosSistema;
 import Constantes.ExceptionCrearExcel;
 import javax.swing.JOptionPane;
 import Constantes.ExceptionLeerExcel;
@@ -14,13 +14,13 @@ import Constantes.ExceptionLeerExcel;
  *
  * @author David
  */
-public class NewExceptionExcel extends Exception {
+public class NewExceptionExcel extends ExceptionSistema {
 
     public NewExceptionExcel() {
     }
 
     public void LeerExcel() {
-        switch (MetodosCargaImp.getInstance().getError()) {
+        switch (AtributosSistema.getInstance().getError()) {
             case "1": {
                 JOptionPane.showMessageDialog(null, ExceptionLeerExcel.ErrorLectura, "Información", JOptionPane.ERROR_MESSAGE);
                 break;

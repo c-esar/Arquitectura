@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author David
  */
-public class NewExceptionCreacionDatos extends Exception {
+public class NewExceptionCreacionDatos extends ExceptionSistema{
 
     public void ExceptionFunciones(String error) {
         switch (error) {

@@ -5,7 +5,7 @@
  */
 package CargaDatosExcel;
 
-import Abstractos.MetodosCarga;
+import Abstractos.ClasesSistemas;
 import Constantes.Constantes;
 import static Constantes.Constantes.Capacidad_Vehiculo;
 import static Constantes.Constantes.Nodos_Con_Ahorro;
@@ -26,61 +26,48 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import Exception.ExceptionSistema;
 
 /**
  *
  * @author David
  */
-public final class MetodosExcelImp implements MetodosCarga {
+public class MetodosCargaExcelImp extends ClasesSistemas implements MetodosCargaExcel{
 
     private String file;
-    private MetodosCargaImp datos;
     private FileInputStream files;
     private XSSFWorkbook wb;
     private String nombreDelDia;
     private String nombreVariable;
     private boolean entreProvedores = true;
     private int ContadorDia = 0;
-    private NewExceptionExcel newExceptionExcel;
+    
 
-    public MetodosExcelImp(String file) throws NewExceptionExcel {
-        newExceptionExcel = new NewExceptionExcel();
+    public MetodosCargaExcelImp() {
+        datos = AtributosSistema.getInstance();
+    }
+    
+ @Override
+    public void IniciarLecturaExcel(String file) {
         try {
             this.file = file;
-            IniciarLecturaExcel();
-        } catch (Exception e) {
-            datos.setError("1");
-            throw newExceptionExcel;
-        }
-
-    }
-
-    public MetodosExcelImp() {
-    }
-
-    private void IniciarLecturaExcel() throws NewExceptionExcel {
-        datos = MetodosCargaImp.getInstance();
-        VerificarArchivoExcel();
-        Leer();
-        try {
+            VerificarArchivoExcel();
+            Leer();
             files.close();
-            //Crear();
-        } catch (IOException e) {
-            datos.setError("3");
-            throw newExceptionExcel;
+        } catch (Exception e) {
         }
     }
 
-    private void VerificarArchivoExcel() throws NewExceptionExcel {
+    private void VerificarArchivoExcel() throws NewExceptionExcel, ExceptionSistema {
         try {
             files = new FileInputStream(new File(file));
             wb = new XSSFWorkbook(files);
         } catch (FileNotFoundException ex) {
             datos.setError("1");
-            throw newExceptionExcel;
+         
         } catch (IOException ex) {
             datos.setError("1");
-            throw newExceptionExcel;
+            
         }
     }
 
@@ -147,9 +134,7 @@ public final class MetodosExcelImp implements MetodosCarga {
                             break;
                         }
                         default: {
-
                         }
-
                     }
                 }
             }
@@ -162,7 +147,7 @@ public final class MetodosExcelImp implements MetodosCarga {
     public void Crear() {
         int filas = -1;
         int columnas = -1;
-        datos = MetodosCargaImp.getInstance();
+        datos = AtributosSistema.getInstance();
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("Resultado");
 
@@ -191,9 +176,9 @@ public final class MetodosExcelImp implements MetodosCarga {
             book.write(fileout);
             fileout.close();
         } catch (FileNotFoundException ex) {
-            newExceptionExcel.CrearExcel("1");
+           
         } catch (IOException ex) {
-            newExceptionExcel.CrearExcel("1");
+           
         }
 
     }

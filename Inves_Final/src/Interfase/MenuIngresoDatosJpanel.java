@@ -5,9 +5,9 @@
  */
 package Interfase;
 
-import CargaDatosExcel.MetodosCargaImp;
-import MetodosImp.EjecucionMetodos;
-import CargaDatosExcel.MetodosExcelImp;
+import CargaDatosExcel.AtributosSistema;
+import pruebas.EjecucionMetodos;
+import CargaDatosExcel.MetodosCargaExcelImp;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +19,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import Exception.NewExceptionCreacionDatos;
 import Exception.NewExceptionExcel;
-import MetodosImp.EjecucionMetodos;
+import Factory.FactoryImp;
+import Factory.FactoryImplementacion;
+import pruebas.EjecucionMetodos;
+import Strategia.MetodosCalculo;
+import Strategia.MetodosCalculoDistancia;
+import Strategia.MetodosCalculoDistanciaImp;
 import java.awt.BorderLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.security.jgss.spi.MechanismFactory;
 
 /**
  *
@@ -32,10 +40,6 @@ public class MenuIngresoDatosJpanel extends JFrame implements Constantes.Constan
     private final int alto = 500;
     private JFileChooser seleccionar = new JFileChooser();
     private File archivo;
-    private FileInputStream entrada;
-    private FileOutputStream salida;
-    private final MetodosCargaImp datos = MetodosCargaImp.getInstance();
-    private MetodosExcelImp file;
     private JButton btnDatos = new JButton(Constantes.ConstantesInterfase.label);
 
     public MenuIngresoDatosJpanel() {
@@ -53,17 +57,9 @@ public class MenuIngresoDatosJpanel extends JFrame implements Constantes.Constan
         if (activo.getSource() == btnDatos) {
             if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
                 archivo = seleccionar.getSelectedFile();
-                try {
-                    file = new MetodosExcelImp(archivo.getPath());
-                } catch (NewExceptionExcel excel) {
-                    excel.LeerExcel();
-                }
-                try {
-                    EjecucionMetodos e = new EjecucionMetodos();
-                } catch (NewExceptionCreacionDatos expDato) {
-                    expDato.ExceptionFunciones(MetodosCargaImp.getInstance().getError());
-                }
-
+                //file = new MetodosExcelImp(archivo.getPath());
+                FactoryImplementacion factoryImp = new FactoryImp();
+                factoryImp.inicioAplicativo(archivo.getPath(), "Distancia");
             }
         }
     }

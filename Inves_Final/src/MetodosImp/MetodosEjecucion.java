@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Abstractos;
+package MetodosImp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author David
  */
-public interface Metodos {
+public interface MetodosEjecucion {
 
     public double CalcularAhorros(double[][] distancia, int PuntoX, int PuntoY);
 

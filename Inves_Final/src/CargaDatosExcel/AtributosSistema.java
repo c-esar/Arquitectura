@@ -5,6 +5,7 @@
  */
 package CargaDatosExcel;
 
+import Abstractos.ClasesSistemas;
 import Constantes.Constantes;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,9 +14,9 @@ import java.util.HashMap;
  *
  * @author David
  */
-public class MetodosCargaImp {
+public class AtributosSistema extends ClasesSistemas {
 
-    private static MetodosCargaImp metodosCargaAB;
+    private static AtributosSistema metodosCargaAB;
     private int numeroProvedores = 0;
     private HashMap<String, Double> CapVolVehiculo;
     private HashMap<String, HashMap<String, ArrayList<Double>>> PesoVolProvedores; // <Dia,<peso/vol, provedores>
@@ -35,14 +36,8 @@ public class MetodosCargaImp {
         variablesNombresExcel.add(Constantes.Volumen);
         variablesNombresExcel.add("Dia");
     }
-//    private double CapacidadVehiculo;// label 24000
-//    private double volumenVehiculo;// label 100
-//    private ArrayList<Double> PesoProvedores;
-//    private ArrayList<Double> VolumenProvedores;
-//      private ArrayList<ArrayList<Double>> distancias;
-//     private ArrayList<ArrayList<Double>> MatrizPuntos;
 
-    private MetodosCargaImp() {
+    public AtributosSistema() {
         this.Nodos = new ArrayList<>();
         this.NodosSuperanVehiculo = new HashMap<>();
         this.PesoVolProvedores = new HashMap<>();
@@ -51,14 +46,11 @@ public class MetodosCargaImp {
         this.ImprimirNodos = new HashMap<>();
         this.CargaTotalSistema = new HashMap<>();
         this.PesoTotalPorDia = new HashMap<>();
-//        this.distancias = new double[getNumeroProvedores()][getNumeroProvedores()];
-//        this.PesoProvedores = new ArrayList<>();
-//        this.VolumenProvedores = new ArrayList<>();
     }
 
-    public static MetodosCargaImp getInstance() {
+    public static AtributosSistema getInstance() {
         if (metodosCargaAB == null) {
-            metodosCargaAB = new MetodosCargaImp();
+            metodosCargaAB = new AtributosSistema();
         }
         return metodosCargaAB;
     }
@@ -115,12 +107,12 @@ public class MetodosCargaImp {
         this.ImprimirNodos = ImprimirNodos;
     }
 
-    public static MetodosCargaImp getMetodosCargaAB() {
+    public static AtributosSistema getMetodosCargaAB() {
         return metodosCargaAB;
     }
 
-    public static void setMetodosCargaAB(MetodosCargaImp metodosCargaAB) {
-        MetodosCargaImp.metodosCargaAB = metodosCargaAB;
+    public static void setMetodosCargaAB(AtributosSistema metodosCargaAB) {
+        AtributosSistema.metodosCargaAB = metodosCargaAB;
     }
 
     public ArrayList<Double> getNodos() {
@@ -144,7 +136,7 @@ public class MetodosCargaImp {
     }
 
     public static void setVariablesNombresExcel(ArrayList<String> variablesNombresExcel) {
-        MetodosCargaImp.variablesNombresExcel = variablesNombresExcel;
+        AtributosSistema.variablesNombresExcel = variablesNombresExcel;
     }
 
     public HashMap<String, Double> getCargaTotalSistema() {
@@ -170,5 +162,5 @@ public class MetodosCargaImp {
     public void setNodosSuperanVehiculo(HashMap<String, ArrayList<Integer>> NodosSuperanVehiculo) {
         this.NodosSuperanVehiculo = NodosSuperanVehiculo;
     }
-    
+
 }

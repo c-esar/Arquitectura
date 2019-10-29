@@ -5,10 +5,10 @@
  */
 package MetodosImp;
 
-import Abstractos.Metodos;
+import Abstractos.ClasesSistemas;
 import static Constantes.Constantes.Nodos_Con_Ahorro;
 import static Constantes.Constantes.Nodos_Directos;
-import CargaDatosExcel.MetodosCargaImp;
+import CargaDatosExcel.AtributosSistema;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,13 +16,18 @@ import java.util.HashMap;
  *
  * @author David
  */
-public class MetodosImp implements Metodos {
+public class MetodosEjecucionImp extends ClasesSistemas implements MetodosEjecucion {
 
-    private final MetodosCargaImp datos = MetodosCargaImp.getInstance();
-    private ArrayList<ArrayList<Double>> PesosNosuperados = new ArrayList<>(); // SinA
-    private ArrayList<ArrayList<Double>> PesosNormal = new ArrayList<>(); // CA
-    private ArrayList<ArrayList<Double>> Aux = new ArrayList<>(); // auxiliar
+    private ArrayList<ArrayList<Double>> PesosNosuperados; // SinA
+    private ArrayList<ArrayList<Double>> PesosNormal; // CA
+    private ArrayList<ArrayList<Double>> Aux; // auxiliar
 
+    public MetodosEjecucionImp(){
+        datos = AtributosSistema.getInstance();
+        this.PesosNosuperados = new ArrayList<>();
+        this.PesosNormal = new ArrayList<>();
+        this.Aux = new ArrayList<>();
+    }
     @Override
     public ArrayList<ArrayList<Double>> OrdenarAhorro(ArrayList<ArrayList<Double>> Puntos) {
         for (int i = 0; i < Puntos.get(2).size() - 1; i++) {

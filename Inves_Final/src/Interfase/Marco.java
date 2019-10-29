@@ -5,8 +5,8 @@
  */
 package Interfase;
 
-import CargaDatosExcel.MetodosCargaImp;
-import CargaDatosExcel.MetodosExcelImp;
+import CargaDatosExcel.AtributosSistema;
+import CargaDatosExcel.MetodosCargaExcelImp;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
