@@ -5,7 +5,8 @@
  */
 package App;
 
-import Interfase.Marco;
+import Interfase.JpanelPrincipal;
+
 
 /**
  *
@@ -17,7 +18,7 @@ public class Inves_Final {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Marco windows = new Marco();
+        JpanelPrincipal windows = new JpanelPrincipal();
     }
 
 }

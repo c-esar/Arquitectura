@@ -6,18 +6,24 @@
 package Interfase;
 
 import java.awt.BorderLayout;
-import java.awt.Panel;
+import java.awt.FlowLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  *
  * @author cesard.chacond
  */
-public class Jpanel2 extends JPanel{
+public class JPanelBotones extends JPanel implements ConstantesInterfase{
     
-    private JTextArea jTextArea = new JTextArea();
-    public Jpanel2(){  
+    public JPanelBotones(){
         this.setLayout(new BorderLayout());
-    }   
+        botonesMenu();
+    }
+
+    private void botonesMenu() {
+        this.setLayout(new FlowLayout());
+        add(boton_datos);
+        add(boton_salir);
+    }
+    
 }

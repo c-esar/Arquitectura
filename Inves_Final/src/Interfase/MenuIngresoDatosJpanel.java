@@ -34,32 +34,41 @@ import sun.security.jgss.spi.MechanismFactory;
  *
  * @author Cesar Chacond
  */
-public class MenuIngresoDatosJpanel extends JFrame implements Constantes.ConstantesInterfase, ActionListener {
+public class MenuIngresoDatosJpanel extends JFrame implements ConstantesInterfase, ActionListener {
 
-    private final int ancho = 500;
-    private final int alto = 500;
+
     private JFileChooser seleccionar = new JFileChooser();
     private File archivo;
-    private JButton btnDatos = new JButton(Constantes.ConstantesInterfase.label);
+    
 
     public MenuIngresoDatosJpanel() {
-        this.setSize(new Dimension(ancho, alto));
+        JPanelBotonesDatos botones_datos = new JPanelBotonesDatos();
+        this.setSize(ancho, alto);
         this.setTitle("Ingresar Datos");
         this.setVisible(false);
-        this.setLayout(null);
-        btnDatos.addActionListener(this);
-        btnDatos.setBounds(100, 100, 150, 150);
-        add(btnDatos, BorderLayout.CENTER);
+        this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        add(botones_datos, BorderLayout.CENTER);
+        btnCargaDatos.addActionListener(this);
+        btnCargaDatos.setActionCommand(btn_cargaDatos);
+        btnGuardar.addActionListener(this);
+        btnGuardar.setActionCommand(btn_guardar);
+        
     }
+    
 
     @Override
     public void actionPerformed(ActionEvent activo) {
-        if (activo.getSource() == btnDatos) {
-            if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
+        String command = activo.getActionCommand();     
+        switch(command){
+            case btn_cargaDatos:{
+                if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
                 archivo = seleccionar.getSelectedFile();
                 //file = new MetodosExcelImp(archivo.getPath());
                 FactoryImplementacion factoryImp = new FactoryImp();
                 factoryImp.inicioAplicativo(archivo.getPath(), "Distancia");
+            }
+                break;
             }
         }
     }
