@@ -48,6 +48,7 @@ public class MenuIngresoDatosJpanel extends JFrame implements ConstantesInterfas
         this.setVisible(false);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setBounds(350, 350, 400, 400);
         add(botones_datos, BorderLayout.CENTER);
         btnCargaDatos.addActionListener(this);
         btnCargaDatos.setActionCommand(btn_cargaDatos);

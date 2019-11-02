@@ -26,7 +26,7 @@ public class JpanelPrincipal extends JFrame implements ActionListener, Constante
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(botonesMenu, BorderLayout.CENTER);
-        
+        this.setBounds(350, 350, 400, 400);
         boton_datos.addActionListener(this);
         boton_datos.setActionCommand(btn_1);
         
