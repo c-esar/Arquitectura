@@ -5,10 +5,8 @@
  */
 package Factory;
 
-import Abstractos.ClasesSistemas;
 import CargaDatosExcel.MetodosCargaExcel;
 import CargaDatosExcel.MetodosCargaExcelImp;
-import pruebas.EjecucionMetodos;
 import Strategia.MetodosCalculo;
 import Strategia.MetodosCalculoDistanciaImp;
 
@@ -18,19 +16,13 @@ import Strategia.MetodosCalculoDistanciaImp;
  */
 public class FactoryImp implements FactoryImplementacion {
 
-    public MetodosCargaExcel metodosExcel;
-    public MetodosCalculo metodosCalculo;
-
-    public FactoryImp() {
-        metodosExcel = new MetodosCargaExcelImp();
+    @Override
+    public boolean inicioLecturaExcel(MetodosCargaExcel metodosExcel) {
+        return metodosExcel.IniciarLecturaExcel();
     }
 
     @Override
-    public void inicioAplicativo(String parametro, String calculo) {
-        metodosExcel.IniciarLecturaExcel(parametro);
-        if ("Distancia".equals(calculo)) {
-            metodosCalculo = new MetodosCalculoDistanciaImp();
-            metodosCalculo.InicioProceso();
-        }
+    public boolean inicioMetodos(MetodosCalculo calculo) {
+        return calculo.InicioProceso();
     }
 }

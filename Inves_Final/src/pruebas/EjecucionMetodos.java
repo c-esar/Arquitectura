@@ -5,7 +5,6 @@
  */
 package pruebas;
 
-import Abstractos.ClasesSistemas;
 import static Constantes.Constantes.Capacidad_Vehiculo;
 import static Constantes.Constantes.Nodos_Con_Ahorro;
 import static Constantes.Constantes.Nodos_Directos;
@@ -26,9 +25,11 @@ import MetodosImp.MetodosEjecucionImp;
  *
  * @author David
  */
-public class EjecucionMetodos extends ClasesSistemas {
+public class EjecucionMetodos {
     private boolean CAB = true;
     private boolean SinAB = true;
+    private AtributosSistema datos;
+    private MetodosEjecucionImp metodosEjecucion;
 
     public EjecucionMetodos() {
         this.metodosEjecucion = new MetodosEjecucionImp();
@@ -43,7 +44,7 @@ public class EjecucionMetodos extends ClasesSistemas {
         } catch (NewExceptionCreacionDatos ex) {
             Logger.getLogger(EjecucionMetodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        CrearExcel(new MetodosCargaExcelImp());
+        //CrearExcel(new MetodosCargaExcelImp());
     }
 
     /*

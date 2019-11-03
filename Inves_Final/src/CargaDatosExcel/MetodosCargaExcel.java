@@ -11,7 +11,7 @@ package CargaDatosExcel;
  */
 public interface MetodosCargaExcel {
 
-    public void Leer();
-    public void Crear();
-    public void IniciarLecturaExcel(String file); 
+    public boolean Leer();
+    public boolean Crear();
+    public boolean IniciarLecturaExcel(); 
 }

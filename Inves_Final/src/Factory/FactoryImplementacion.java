@@ -5,13 +5,7 @@
  */
 package Factory;
 
-import Abstractos.ClasesSistemas;
-import MetodosImp.MetodosEjecucion;
-import CargaDatosExcel.AtributosSistema;
-import CargaDatosExcel.MetodosCargaExcelImp;
-import Exception.ExceptionSistema;
-import Exception.NewExceptionCreacionDatos;
-import pruebas.EjecucionMetodos;
+import CargaDatosExcel.MetodosCargaExcel;
 import Strategia.MetodosCalculo;
 
 /**
@@ -19,5 +13,6 @@ import Strategia.MetodosCalculo;
  * @author cesard.chacond
  */
 public interface FactoryImplementacion {
-    public void inicioAplicativo(String parametro, String calculo);
+    public boolean inicioLecturaExcel(MetodosCargaExcel metodosExcel);
+    public boolean inicioMetodos(MetodosCalculo a);
 }

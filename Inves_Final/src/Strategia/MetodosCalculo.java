@@ -5,8 +5,9 @@
  */
 package Strategia;
 
-import Abstractos.ClasesSistemas;
+import CargaDatosExcel.AtributosSistema;
 import MetodosImp.MetodosEjecucion;
+import MetodosImp.MetodosEjecucionImp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,8 +17,9 @@ import java.util.HashMap;
  */
 public interface MetodosCalculo{
     
-    public void CargaSistemaVehiculoVolumen();
-    public void InicioProceso();
+    public AtributosSistema datos = AtributosSistema.getInstance();
+    public MetodosEjecucionImp metodosEjecucion = new MetodosEjecucionImp();
+    public boolean InicioProceso();
     public void CrearPuntosArrayList(double[][] Puntos, String dia, int numeroDias);
     public void CompararNodosConCapacidadVehiculo(String dia, Double CapacidadVehiculo, Double Volumen, ArrayList<Double> PesoProvedor, ArrayList<Double> VolumenProvedor);
     public void VerificarNodos(String dia, HashMap<String, ArrayList<ArrayList<Double>>> matrizPuntos, int numeroProvedores, ArrayList<Double> Peso, ArrayList<Double> Volumen);

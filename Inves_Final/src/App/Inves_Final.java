@@ -5,7 +5,7 @@
  */
 package App;
 
-import Interfase.JpanelPrincipal;
+import Interfase.JPanelPrincipals;
 
 
 /**
@@ -18,7 +18,7 @@ public class Inves_Final {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JpanelPrincipal windows = new JpanelPrincipal();
+        JPanelPrincipals windows = new JPanelPrincipals();
     }
 
 }

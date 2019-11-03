@@ -5,16 +5,36 @@
  */
 package Interfase;
 
+import CargaDatosExcel.AtributosSistema;
+import CargaDatosExcel.MetodosCargaExcel;
+import CargaDatosExcel.MetodosCargaExcelImp;
+import Factory.FactoryImp;
+import Factory.FactoryImplementacion;
+import Strategia.MetodosCalculoDistanciaImp;
+import Strategia.MetodosCalculoEmisionImp;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Ingenieria
  */
-public class JPanelElementos extends javax.swing.JFrame {
+public class JPanelElementos extends javax.swing.JFrame implements ConstantesInterfase {
 
     /**
      * Creates new form JPanelElementos
      */
+    private JFileChooser seleccionar = new JFileChooser();
+    private File archivo;
+    private FactoryImplementacion factoryImp = new FactoryImp();
+
     public JPanelElementos() {
+        this.setBounds(350, 350, 400, 400);
+        this.setSize(ancho, alto);
+        this.setTitle(tituloDatos);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
     }
 
@@ -27,57 +47,188 @@ public class JPanelElementos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1_numeroProvedores = new javax.swing.JLabel();
+        jLabel2_CapVehiculo = new javax.swing.JLabel();
+        jLabel3_CapVolumen = new javax.swing.JLabel();
+        jLabel4_CargaMIn = new javax.swing.JLabel();
+        jLabel5_ProRuta = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField1_NumeroProvedores = new javax.swing.JTextField();
+        jTextField2_CpaVehiculo = new javax.swing.JTextField();
+        jTextField3_CapVolumen = new javax.swing.JTextField();
+        jTextField4_CargaMin = new javax.swing.JTextField();
+        jTextField5_ProRuta = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jButton1_SubirExcel = new javax.swing.JButton();
+        jButton2_GenerarExcel = new javax.swing.JButton();
+        jComboBox1_Metodos = new javax.swing.JComboBox<>();
+        jLabel1_metodos = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1_numeroProvedores.setText("Numero Provedores:");
+
+        jLabel2_CapVehiculo.setText("Capacidad Vehiculo:");
+
+        jLabel3_CapVolumen.setText("Capacidad Volumen:");
+
+        jLabel4_CargaMIn.setText("Cargar minima:");
+
+        jLabel5_ProRuta.setText("Provedores por Ruta:");
+
+        jLabel6.setText("jLabel6");
+
+        jTextField6.setText("jTextField6");
+
+        jButton1_SubirExcel.setText("Subir Excel");
+        jButton1_SubirExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1_SubirExcelActionPerformed(evt);
+            }
+        });
+
+        jButton2_GenerarExcel.setText("Generar Excel");
+        jButton2_GenerarExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2_GenerarExcelActionPerformed(evt);
+            }
+        });
+
+        jComboBox1_Metodos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Distancia", "Emision" }));
+
+        jLabel1_metodos.setText("Seleccionar Metodo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1_SubirExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2_GenerarExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1_numeroProvedores)
+                            .addComponent(jLabel2_CapVehiculo)
+                            .addComponent(jLabel3_CapVolumen)
+                            .addComponent(jLabel4_CargaMIn)
+                            .addComponent(jLabel5_ProRuta)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel1_metodos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField1_NumeroProvedores)
+                                    .addComponent(jTextField2_CpaVehiculo)
+                                    .addComponent(jTextField3_CapVolumen)
+                                    .addComponent(jTextField4_CargaMin)
+                                    .addComponent(jTextField5_ProRuta)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 1, Short.MAX_VALUE)
+                                .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1_numeroProvedores)
+                            .addComponent(jTextField1_NumeroProvedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2_CapVehiculo)
+                            .addComponent(jTextField2_CpaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3_CapVolumen)
+                            .addComponent(jTextField3_CapVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4_CargaMIn)
+                            .addComponent(jTextField4_CargaMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5_ProRuta)
+                            .addComponent(jTextField5_ProRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1_metodos)
+                        .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(jButton1_SubirExcel)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2_GenerarExcel)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JPanelElementos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JPanelElementos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JPanelElementos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JPanelElementos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jButton1_SubirExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_SubirExcelActionPerformed
+        if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
+            archivo = seleccionar.getSelectedFile();
+            factoryImp.inicioLecturaExcel(new MetodosCargaExcelImp(archivo.getPath()));
         }
-        //</editor-fold>
+    }//GEN-LAST:event_jButton1_SubirExcelActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JPanelElementos().setVisible(true);
+    private void jButton2_GenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_GenerarExcelActionPerformed
+        System.out.println(jComboBox1_Metodos.getSelectedIndex());
+        switch (jComboBox1_Metodos.getSelectedIndex()) {
+            case 0: {
+                if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()),Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
+                    System.out.println("bien");
+                    this.dispose();
+                } else {
+                    System.out.println("error");
+                }
+                break;
             }
-        });
-    }
+            case 1: {
+                if (factoryImp.inicioMetodos(new MetodosCalculoEmisionImp())) {
+                    System.out.println("bien");
+                } else {
+                    System.out.println("error");
+                }
+                break;
+            }
+            default: {
+                System.out.println("Error");
+            }
+        }
+
+    }//GEN-LAST:event_jButton2_GenerarExcelActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1_SubirExcel;
+    private javax.swing.JButton jButton2_GenerarExcel;
+    private javax.swing.JComboBox<String> jComboBox1_Metodos;
+    private javax.swing.JLabel jLabel1_metodos;
+    private javax.swing.JLabel jLabel1_numeroProvedores;
+    private javax.swing.JLabel jLabel2_CapVehiculo;
+    private javax.swing.JLabel jLabel3_CapVolumen;
+    private javax.swing.JLabel jLabel4_CargaMIn;
+    private javax.swing.JLabel jLabel5_ProRuta;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField jTextField1_NumeroProvedores;
+    private javax.swing.JTextField jTextField2_CpaVehiculo;
+    private javax.swing.JTextField jTextField3_CapVolumen;
+    private javax.swing.JTextField jTextField4_CargaMin;
+    private javax.swing.JTextField jTextField5_ProRuta;
+    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }

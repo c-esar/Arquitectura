@@ -5,7 +5,6 @@
  */
 package CargaDatosExcel;
 
-import Abstractos.ClasesSistemas;
 import Constantes.Constantes;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.HashMap;
  *
  * @author David
  */
-public class AtributosSistema extends ClasesSistemas {
+public class AtributosSistema {
 
     private static AtributosSistema metodosCargaAB;
     private int numeroProvedores = 0;

@@ -12,8 +12,6 @@ import static Constantes.Constantes.Nodos_Directos;
 import static Constantes.Constantes.Nodos_Sin_Ahorro;
 import static Constantes.Constantes.Nodos_Superan_Capacidad_Vehiculo;
 import static Constantes.Constantes.Volumen_Vehiculo;
-import Exception.NewExceptionCreacionDatos;
-import MetodosImp.MetodosEjecucionImp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,47 +21,46 @@ import java.util.HashMap;
  */
 public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
 
-    public MetodosCalculoDistanciaImp() {
-        this.metodosEjecucion = new MetodosEjecucionImp();
-        this.datos = AtributosSistema.getInstance();
+    public MetodosCalculoDistanciaImp(double Volumen, double Capacidad) {
+        datos.getCapVolVehiculo().put(Capacidad_Vehiculo, Capacidad);
+        datos.getCapVolVehiculo().put(Volumen_Vehiculo, Volumen);
     }
 
     @Override
-    public void CargaSistemaVehiculoVolumen() {
-        datos.getCapVolVehiculo().put(Capacidad_Vehiculo, 30.0);
-        datos.getCapVolVehiculo().put(Volumen_Vehiculo, 100.0);
-    }
-
-    @Override
-    public void InicioProceso() {
-        CargaSistemaVehiculoVolumen();
+    public boolean InicioProceso() {
         SacarPesoPorDia();
         String dia = null;
-        for (int i = 0; i < datos.getPesoVolProvedores().size(); i++) {
-            dia = "Dia" + String.valueOf(i + 1);
-            System.out.println("Ruta para " + dia);
-            System.out.println("");
-            if (datos.getPesoTotalPorDia().get(dia).get(Constantes.Constantes.Demanda_kg) < datos.getCapVolVehiculo().get(Constantes.Constantes.Capacidad_Vehiculo)) {
-                System.out.println("Sistema se puede recoger con un solo Camion");
-                System.out.println(CrearNodosDirectos(dia));
-                ImprimirResultadoSistema(false, dia);
-            } else {
-                CrearPuntosArrayList(datos.getDistancias(), dia, datos.getPesoVolProvedores().size()); // unir parejas con ahorro
-
-                CompararNodosConCapacidadVehiculo(dia, datos.getCapVolVehiculo().get(Capacidad_Vehiculo), datos.getCapVolVehiculo().get(Volumen_Vehiculo),
-                        datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
-
-                VerificarNodos(dia, datos.getMatrizPuntos().get(dia), datos.getNumeroProvedores(),
-                        datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
-
-                ImprimirResultado(dia, datos.getMatrizPuntos().get(dia), datos.getDistancias(),
-                        datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
-
-                ImprimirResultadoSistema(true, dia);
+        try {
+            for (int i = 0; i < datos.getPesoVolProvedores().size(); i++) {
+                dia = "Dia" + String.valueOf(i + 1);
+                System.out.println("Ruta para " + dia);
                 System.out.println("");
-            }
+                if (datos.getPesoTotalPorDia().get(dia).get(Constantes.Constantes.Demanda_kg) < datos.getCapVolVehiculo().get(Constantes.Constantes.Capacidad_Vehiculo)) {
+                    System.out.println("Sistema se puede recoger con un solo Camion");
+                    System.out.println(CrearNodosDirectos(dia));
+                    ImprimirResultadoSistema(false, dia);
+                } else {
+                    CrearPuntosArrayList(datos.getDistancias(), dia, datos.getPesoVolProvedores().size()); // unir parejas con ahorro
 
+                    CompararNodosConCapacidadVehiculo(dia, datos.getCapVolVehiculo().get(Capacidad_Vehiculo), datos.getCapVolVehiculo().get(Volumen_Vehiculo),
+                            datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
+
+                    VerificarNodos(dia, datos.getMatrizPuntos().get(dia), datos.getNumeroProvedores(),
+                            datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
+
+                    ImprimirResultado(dia, datos.getMatrizPuntos().get(dia), datos.getDistancias(),
+                            datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
+
+                    ImprimirResultadoSistema(true, dia);
+                    System.out.println("");
+                }
+
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
+
     }
 
     @Override
@@ -214,11 +211,11 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
             System.out.println("Resultado del sistema " + " Peso: " + datos.getPesoTotalPorDia().get(dia).get(Constantes.Constantes.Demanda_kg));
             //System.out.println("Resultado del sistema " + " Distancia: " + atributosCarga.getPesoTotalPorDia().get(dia).get(Constantes.Constantes.DistanciaTOtalSistema));
             System.out.println("Resultado del sistema " + " Volumen: " + datos.getPesoTotalPorDia().get(dia).get(Constantes.Constantes.Volumen));
-            if (datos.getNodosSuperanVehiculo().size() > 0) {
-                for (int i = 0; i < datos.getNodosSuperanVehiculo().get(dia).size(); i++) {
-                    System.out.println("Nodos Con cargar Mayor al vehiculo Provedor " + datos.getNodosSuperanVehiculo().get(dia).get(i));
-                }
-            }
+//            if (datos.getNodosSuperanVehiculo().size() > 0) {
+//                for (int i = 0; i < datos.getNodosSuperanVehiculo().get(dia).size(); i++) {
+//                    System.out.println("Nodos Con cargar Mayor al vehiculo Provedor " + datos.getNodosSuperanVehiculo().get(dia).get(i));
+//                }
+//            }
             System.out.println(" ");
         }
     }

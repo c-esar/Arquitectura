@@ -15,12 +15,7 @@ import java.util.HashMap;
 public class MetodosCalculoEmisionImp extends MetodosCalculoEmision{
 
     @Override
-    public void CargaSistemaVehiculoVolumen() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void InicioProceso() {
+    public boolean InicioProceso() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

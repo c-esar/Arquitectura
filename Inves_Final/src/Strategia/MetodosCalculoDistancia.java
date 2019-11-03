@@ -5,13 +5,12 @@
  */
 package Strategia;
 
-import Abstractos.ClasesSistemas;
 
 /**
  *
  * @author cesard.chacond
  */
-public abstract class MetodosCalculoDistancia extends ClasesSistemas implements MetodosCalculo{
+public abstract class MetodosCalculoDistancia implements MetodosCalculo{
     protected boolean CAB = true;
     protected boolean SinAB = true;
 

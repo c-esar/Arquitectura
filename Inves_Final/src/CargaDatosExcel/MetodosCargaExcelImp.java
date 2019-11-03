@@ -5,11 +5,7 @@
  */
 package CargaDatosExcel;
 
-import Abstractos.ClasesSistemas;
 import Constantes.Constantes;
-import static Constantes.Constantes.Capacidad_Vehiculo;
-import static Constantes.Constantes.Nodos_Con_Ahorro;
-import static Constantes.Constantes.Volumen_Vehiculo;
 import Exception.NewExceptionExcel;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,8 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,7 +26,7 @@ import Exception.ExceptionSistema;
  *
  * @author David
  */
-public class MetodosCargaExcelImp extends ClasesSistemas implements MetodosCargaExcel{
+public class MetodosCargaExcelImp implements MetodosCargaExcel{
 
     private String file;
     private FileInputStream files;
@@ -41,27 +35,30 @@ public class MetodosCargaExcelImp extends ClasesSistemas implements MetodosCarga
     private String nombreVariable;
     private boolean entreProvedores = true;
     private int ContadorDia = 0;
-    
+    private AtributosSistema datos;
 
-    public MetodosCargaExcelImp() {
+    public MetodosCargaExcelImp(String path) {
         datos = AtributosSistema.getInstance();
+        file = path;
     }
     
  @Override
-    public void IniciarLecturaExcel(String file) {
+    public boolean IniciarLecturaExcel() {
         try {
-            this.file = file;
             VerificarArchivoExcel();
             Leer();
             files.close();
+            return true;
         } catch (Exception e) {
+            return false;
         }
     }
 
-    private void VerificarArchivoExcel() throws NewExceptionExcel, ExceptionSistema {
+    private boolean VerificarArchivoExcel() throws NewExceptionExcel, ExceptionSistema {
         try {
             files = new FileInputStream(new File(file));
             wb = new XSSFWorkbook(files);
+            return true;
         } catch (FileNotFoundException ex) {
             datos.setError("1");
          
@@ -69,10 +66,11 @@ public class MetodosCargaExcelImp extends ClasesSistemas implements MetodosCarga
             datos.setError("1");
             
         }
+        return false;
     }
 
     @Override
-    public void Leer() {
+    public boolean Leer() {
         XSSFSheet sheet = wb.getSheetAt(0);
         int numFilas = sheet.getLastRowNum();
         for (int x = 1; x <= numFilas; x++) {
@@ -141,10 +139,11 @@ public class MetodosCargaExcelImp extends ClasesSistemas implements MetodosCarga
             System.out.println("");
         }
         //System.out.println(Arrays.toString(datos.getDistancias()));
+        return true;
     }
 
     @Override
-    public void Crear() {
+    public boolean Crear() {
         int filas = -1;
         int columnas = -1;
         datos = AtributosSistema.getInstance();
@@ -180,6 +179,7 @@ public class MetodosCargaExcelImp extends ClasesSistemas implements MetodosCarga
         } catch (IOException ex) {
            
         }
+        return false;
 
     }
 

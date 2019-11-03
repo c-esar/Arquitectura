@@ -5,7 +5,6 @@
  */
 package MetodosImp;
 
-import Abstractos.ClasesSistemas;
 import static Constantes.Constantes.Nodos_Con_Ahorro;
 import static Constantes.Constantes.Nodos_Directos;
 import CargaDatosExcel.AtributosSistema;
@@ -16,12 +15,13 @@ import java.util.HashMap;
  *
  * @author David
  */
-public class MetodosEjecucionImp extends ClasesSistemas implements MetodosEjecucion {
+public class MetodosEjecucionImp implements MetodosEjecucion {
 
     private ArrayList<ArrayList<Double>> PesosNosuperados; // SinA
     private ArrayList<ArrayList<Double>> PesosNormal; // CA
     private ArrayList<ArrayList<Double>> Aux; // auxiliar
-
+    private AtributosSistema datos;
+    
     public MetodosEjecucionImp(){
         datos = AtributosSistema.getInstance();
         this.PesosNosuperados = new ArrayList<>();
@@ -218,6 +218,7 @@ public class MetodosEjecucionImp extends ClasesSistemas implements MetodosEjecuc
         double resultadoSistemaPeso = 0.0;
         double resultadoSistemaDistancia = 0.0;
         double resultadosSistemaVolumen = 0.0;
+        int count =0;
         PesosNormal = new ArrayList<>();
         PesosNosuperados = new ArrayList<>();
         if (CA.size() > 0) {
@@ -233,6 +234,7 @@ public class MetodosEjecucionImp extends ClasesSistemas implements MetodosEjecuc
             }
         }
         if (SinA.size() > 0) {
+            
             boolean entre;
             for (int i = 0; i < SinA.size(); i++) {
                 entre = true;
@@ -244,10 +246,11 @@ public class MetodosEjecucionImp extends ClasesSistemas implements MetodosEjecuc
                 }
                 if (entre) {
                     PesosNosuperados.add(new ArrayList<>());
-                    PesosNosuperados.get(i).add(SinA.get(i).get(0)); // pos
-                    PesosNosuperados.get(i).add(SinA.get(i).get(1)); // peso
-                    PesosNosuperados.get(i).add(SinA.get(i).get(2)); // volumen
-                    PesosNosuperados.get(i).add(CalcularDistancia(distancias, PesosNosuperados.get(i).get(0).intValue(), Integer.parseInt("0"))); // distancia
+                    PesosNosuperados.get(count).add(SinA.get(i).get(0)); // pos
+                    PesosNosuperados.get(count).add(SinA.get(i).get(1)); // peso
+                    PesosNosuperados.get(count).add(SinA.get(i).get(2)); // volumen
+                    PesosNosuperados.get(count).add(CalcularDistancia(distancias, PesosNosuperados.get(count).get(0).intValue(), Integer.parseInt("0"))); // distancia
+                    count+=1;
                 }
             }
         }
