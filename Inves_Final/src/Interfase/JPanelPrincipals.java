@@ -87,6 +87,7 @@ public class JPanelPrincipals extends javax.swing.JFrame implements ConstantesIn
     }//GEN-LAST:event_jButton1_IngresoDatosActionPerformed
 
     private void jButton2_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_salirActionPerformed
+
         dispose();
     }//GEN-LAST:event_jButton2_salirActionPerformed
 

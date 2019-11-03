@@ -15,6 +15,7 @@ import Strategia.MetodosCalculoEmisionImp;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,6 +29,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     private JFileChooser seleccionar = new JFileChooser();
     private File archivo;
     private FactoryImplementacion factoryImp = new FactoryImp();
+    private boolean entre = false;
 
     public JPanelElementos() {
         this.setBounds(350, 350, 400, 400);
@@ -181,33 +183,42 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     private void jButton1_SubirExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_SubirExcelActionPerformed
         if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
             archivo = seleccionar.getSelectedFile();
-            factoryImp.inicioLecturaExcel(new MetodosCargaExcelImp(archivo.getPath()));
+            if (factoryImp.inicioLecturaExcel(new MetodosCargaExcelImp(archivo.getPath()))) {
+                JOptionPane.showMessageDialog(null, "Datos cargados", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                entre = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Problema a carga datos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton1_SubirExcelActionPerformed
 
     private void jButton2_GenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_GenerarExcelActionPerformed
         System.out.println(jComboBox1_Metodos.getSelectedIndex());
-        switch (jComboBox1_Metodos.getSelectedIndex()) {
-            case 0: {
-                if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()),Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
-                    System.out.println("bien");
-                    this.dispose();
-                } else {
-                    System.out.println("error");
+        if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && entre && archivo != null) {
+            switch (jComboBox1_Metodos.getSelectedIndex()) {
+                case 0: {
+                    if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
+                        JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
                 }
-                break;
-            }
-            case 1: {
-                if (factoryImp.inicioMetodos(new MetodosCalculoEmisionImp())) {
-                    System.out.println("bien");
-                } else {
-                    System.out.println("error");
+                case 1: {
+                    if (factoryImp.inicioMetodos(new MetodosCalculoEmisionImp())) {
+                        JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
                 }
-                break;
+                default: {
+                    JOptionPane.showMessageDialog(null, "Problema en la aplicación", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            default: {
-                System.out.println("Error");
-            }
+        }else {
+           JOptionPane.showMessageDialog(null, "Falta información", "Error", JOptionPane.ERROR_MESSAGE); 
         }
 
     }//GEN-LAST:event_jButton2_GenerarExcelActionPerformed
