@@ -7,7 +7,7 @@ package MetodosImp;
 
 import static Constantes.Constantes.Nodos_Con_Ahorro;
 import static Constantes.Constantes.Nodos_Directos;
-import CargaDatosExcel.AtributosSistema;
+import Variables.AtributosSistema;
 import java.util.ArrayList;
 import java.util.HashMap;
 

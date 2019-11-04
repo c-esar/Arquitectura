@@ -5,14 +5,13 @@
  */
 package interprete;
 
-import CargaDatosExcel.AtributosSistema;
+import Variables.AtributosSistema;
 
 /**
  *
  * @author David
  */
 public abstract class SalidaInterprete {
-      
     public void interprete(SalidaInterprete salidaInterprete){
         salidaInterprete.salida();
     }

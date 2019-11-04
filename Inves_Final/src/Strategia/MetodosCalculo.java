@@ -5,8 +5,7 @@
  */
 package Strategia;
 
-import CargaDatosExcel.AtributosSistema;
-import MetodosImp.MetodosEjecucion;
+import Variables.AtributosSistema;
 import MetodosImp.MetodosEjecucionImp;
 import java.util.ArrayList;
 import java.util.HashMap;

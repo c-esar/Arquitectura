@@ -5,6 +5,7 @@
  */
 package CargaDatosExcel;
 
+import Variables.AtributosSistema;
 import Constantes.Constantes;
 import Exception.NewExceptionExcel;
 import java.io.File;
@@ -37,14 +38,14 @@ public class CargaExcelImp implements CargaExcel {
     private int ContadorDia = 0;
     private AtributosSistema datos;
 
-    public CargaExcelImp(String path) {
+    public CargaExcelImp() {
         datos = AtributosSistema.getInstance();
-        file = path;
     }
 
     @Override
-    public boolean IniciarLecturaExcel() {
+    public boolean IniciarLecturaExcel(String path) {
         try {
+            file = path;
             VerificarArchivoExcel();
             Leer();
             files.close();

@@ -5,7 +5,7 @@
  */
 package Interfase;
 
-import CargaDatosExcel.AtributosSistema;
+import Variables.AtributosSistema;
 import CargaDatosExcel.CargaExcelImp;
 import Factory.FactoryImp;
 import Factory.FactoryImplementacion;
@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import CargaDatosExcel.CargaExcel;
+import interprete.SalidaCsv;
 
 /**
  *
@@ -32,7 +33,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     private JFileChooser seleccionar = new JFileChooser();
     private File archivo;
     private FactoryImplementacion factoryImp = new FactoryImp();
-    private boolean entre = false;
+    private CargaExcel cargaExcel;
 
     public JPanelElementos() {
         this.setBounds(350, 350, 400, 400);
@@ -40,6 +41,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         this.setTitle(tituloDatos);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cargaExcel = new CargaExcelImp();
         initComponents();
     }
 
@@ -194,66 +196,108 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1_SubirExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_SubirExcelActionPerformed
-        if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
-            archivo = seleccionar.getSelectedFile();
-            if (factoryImp.inicioLecturaExcel(new CargaExcelImp(archivo.getPath()))) {
-                JOptionPane.showMessageDialog(null, "Datos cargados", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                entre = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Problema a carga datos", "Error", JOptionPane.ERROR_MESSAGE);
+        try {
+            if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
+                archivo = seleccionar.getSelectedFile();
             }
+        } finally {
+            JOptionPane.showMessageDialog(null, "Archivo no reconocido", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jButton1_SubirExcelActionPerformed
 
     private void jButton2_GenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_GenerarExcelActionPerformed
         System.out.println(jComboBox1_Metodos.getSelectedIndex());
         Contexto context = new Contexto(jComboBox1_salida.getSelectedItem().toString());
-        if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && entre && archivo != null) {
+        SalidaInterprete salida;
+        if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && archivo != null) {
             switch (jComboBox1_Metodos.getSelectedIndex()) {
                 case 0: {
-                    if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
-                        if (context.getSalida().equals("Excel")) {
-                            SalidaInterprete a = new SalidaExcel();
-                            a.interprete(a);
-                            JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                            int input = JOptionPane.showConfirmDialog(null, "Generar nuevo excel", "Información", JOptionPane.INFORMATION_MESSAGE);
-                            switch (input) {
-                                case 0: {
-                                    jTextField3_CapVolumen.setText("");
-                                    jTextField2_CpaVehiculo.setText("");
-                                    archivo = null;
-                                    JOptionPane.showMessageDialog(null, "Digite nuevamente los datos", "Información", JOptionPane.INFORMATION_MESSAGE);
+
+                    if (cargaExcel.IniciarLecturaExcel(archivo.getPath())) {
+                        if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
+                            switch (context.getSalida()) {
+                                case "Excel": {
+                                    salida = new SalidaExcel();
+                                    salida.interprete(salida);
+                                    JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                                    int input = JOptionPane.showConfirmDialog(null, "Generar nuevo excel", "Información", JOptionPane.INFORMATION_MESSAGE);
+                                    switch (input) {
+                                        case 0: {
+                                            jTextField3_CapVolumen.setText("");
+                                            jTextField2_CpaVehiculo.setText("");
+                                            archivo = null;
+                                            JOptionPane.showMessageDialog(null, "Digite nuevamente los datos", "Información", JOptionPane.INFORMATION_MESSAGE);
+                                            break;
+                                        }
+                                        case 1: {
+                                            dispose();
+                                            break;
+                                        }
+                                        case 2: {
+                                            dispose();
+                                            break;
+                                        }
+                                        default: {
+                                            dispose();
+                                        }
+                                    }
+                                    System.out.println(input);
                                     break;
                                 }
-                                case 1: {
-                                    dispose();
+                                case "CSV": {
+                                    salida = new SalidaCsv();
+                                    salida.interprete(salida);
+                                    JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                                    int input = JOptionPane.showConfirmDialog(null, "Generar nuevo excel", "Información", JOptionPane.INFORMATION_MESSAGE);
+                                    switch (input) {
+                                        case 0: {
+                                            jTextField3_CapVolumen.setText("");
+                                            jTextField2_CpaVehiculo.setText("");
+                                            archivo = null;
+                                            JOptionPane.showMessageDialog(null, "Digite nuevamente los datos", "Información", JOptionPane.INFORMATION_MESSAGE);
+                                            break;
+                                        }
+                                        case 1: {
+                                            dispose();
+                                            break;
+                                        }
+                                        case 2: {
+                                            dispose();
+                                            break;
+                                        }
+                                        default: {
+                                            dispose();
+                                        }
+                                    }
                                     break;
                                 }
-                                case 2: {
+                                default:
+                                    JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
                                     dispose();
                                     break;
-                                }
-                                default: {
-                                    dispose();
-                                }
                             }
-                            System.out.println(input);
                         } else {
                             JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
-                            dispose();
                         }
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Problema a carga datos", "Error", JOptionPane.ERROR_MESSAGE);
                     }
+
                     break;
                 }
                 case 1: {
-                    if (factoryImp.inicioMetodos(new MetodosCalculoEmisionImp())) {
-                        JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    if (cargaExcel.IniciarLecturaExcel(archivo.getPath())) {
+                        if (factoryImp.inicioMetodos(new MetodosCalculoEmisionImp())) {
+                            JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Problema a carga datos", "Error", JOptionPane.ERROR_MESSAGE);
                     }
+
                     break;
                 }
                 default: {

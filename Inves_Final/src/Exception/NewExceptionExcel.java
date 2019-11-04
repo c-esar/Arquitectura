@@ -5,7 +5,7 @@
  */
 package Exception;
 
-import CargaDatosExcel.AtributosSistema;
+import Variables.AtributosSistema;
 import Constantes.ExceptionCrearExcel;
 import javax.swing.JOptionPane;
 import Constantes.ExceptionLeerExcel;

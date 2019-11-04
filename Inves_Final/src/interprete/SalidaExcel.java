@@ -5,7 +5,7 @@
  */
 package interprete;
 
-import CargaDatosExcel.AtributosSistema;
+import Variables.AtributosSistema;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
