@@ -9,9 +9,8 @@ package CargaDatosExcel;
  *
  * @author David
  */
-public interface MetodosCargaExcel {
+public interface CargaExcel {
 
     public boolean Leer();
-    public boolean Crear();
     public boolean IniciarLecturaExcel(); 
 }

@@ -6,16 +6,19 @@
 package Interfase;
 
 import CargaDatosExcel.AtributosSistema;
-import CargaDatosExcel.MetodosCargaExcel;
-import CargaDatosExcel.MetodosCargaExcelImp;
+import CargaDatosExcel.CargaExcelImp;
 import Factory.FactoryImp;
 import Factory.FactoryImplementacion;
 import Strategia.MetodosCalculoDistanciaImp;
 import Strategia.MetodosCalculoEmisionImp;
+import interprete.Contexto;
+import interprete.SalidaExcel;
+import interprete.SalidaInterprete;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import CargaDatosExcel.CargaExcel;
 
 /**
  *
@@ -65,6 +68,8 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         jButton2_GenerarExcel = new javax.swing.JButton();
         jComboBox1_Metodos = new javax.swing.JComboBox<>();
         jLabel1_metodos = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1_salida = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,6 +105,15 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
 
         jLabel1_metodos.setText("Seleccionar Metodo");
 
+        jLabel1.setText("Salida del archivo");
+
+        jComboBox1_salida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Excel", "CSV" }));
+        jComboBox1_salida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1_salidaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,11 +122,6 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1_SubirExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2_GenerarExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1_numeroProvedores)
                             .addComponent(jLabel2_CapVehiculo)
@@ -120,61 +129,65 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                             .addComponent(jLabel4_CargaMIn)
                             .addComponent(jLabel5_ProRuta)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel1_metodos))
+                            .addComponent(jLabel1_metodos)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1_NumeroProvedores)
-                                    .addComponent(jTextField2_CpaVehiculo)
-                                    .addComponent(jTextField3_CapVolumen)
-                                    .addComponent(jTextField4_CargaMin)
-                                    .addComponent(jTextField5_ProRuta)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 1, Short.MAX_VALUE)
-                                .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField6)
+                            .addComponent(jTextField1_NumeroProvedores, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(jTextField2_CpaVehiculo)
+                            .addComponent(jTextField3_CapVolumen)
+                            .addComponent(jTextField4_CargaMin)
+                            .addComponent(jTextField5_ProRuta)
+                            .addComponent(jComboBox1_salida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1_SubirExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2_GenerarExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1_numeroProvedores)
-                            .addComponent(jTextField1_NumeroProvedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2_CapVehiculo)
-                            .addComponent(jTextField2_CpaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3_CapVolumen)
-                            .addComponent(jTextField3_CapVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4_CargaMIn)
-                            .addComponent(jTextField4_CargaMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5_ProRuta)
-                            .addComponent(jTextField5_ProRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1_metodos)
-                        .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(jButton1_SubirExcel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1_numeroProvedores)
+                    .addComponent(jTextField1_NumeroProvedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2_CapVehiculo)
+                    .addComponent(jTextField2_CpaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3_CapVolumen)
+                    .addComponent(jTextField3_CapVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4_CargaMIn)
+                    .addComponent(jTextField4_CargaMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5_ProRuta)
+                    .addComponent(jTextField5_ProRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1_metodos)
+                    .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox1_salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1_SubirExcel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2_GenerarExcel)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,7 +196,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     private void jButton1_SubirExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_SubirExcelActionPerformed
         if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
             archivo = seleccionar.getSelectedFile();
-            if (factoryImp.inicioLecturaExcel(new MetodosCargaExcelImp(archivo.getPath()))) {
+            if (factoryImp.inicioLecturaExcel(new CargaExcelImp(archivo.getPath()))) {
                 JOptionPane.showMessageDialog(null, "Datos cargados", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 entre = true;
             } else {
@@ -194,12 +207,42 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
 
     private void jButton2_GenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_GenerarExcelActionPerformed
         System.out.println(jComboBox1_Metodos.getSelectedIndex());
+        Contexto context = new Contexto(jComboBox1_salida.getSelectedItem().toString());
         if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && entre && archivo != null) {
             switch (jComboBox1_Metodos.getSelectedIndex()) {
                 case 0: {
                     if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
-                        JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                        this.dispose();
+                        if (context.getSalida().equals("Excel")) {
+                            SalidaInterprete a = new SalidaExcel();
+                            a.interprete(a);
+                            JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                            int input = JOptionPane.showConfirmDialog(null, "Generar nuevo excel", "Información", JOptionPane.INFORMATION_MESSAGE);
+                            switch (input) {
+                                case 0: {
+                                    jTextField3_CapVolumen.setText("");
+                                    jTextField2_CpaVehiculo.setText("");
+                                    archivo = null;
+                                    JOptionPane.showMessageDialog(null, "Digite nuevamente los datos", "Información", JOptionPane.INFORMATION_MESSAGE);
+                                    break;
+                                }
+                                case 1: {
+                                    dispose();
+                                    break;
+                                }
+                                case 2: {
+                                    dispose();
+                                    break;
+                                }
+                                default: {
+                                    dispose();
+                                }
+                            }
+                            System.out.println(input);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
+                            dispose();
+                        }
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Se presento un problema al generar el excel", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -217,17 +260,23 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                     JOptionPane.showMessageDialog(null, "Problema en la aplicación", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        }else {
-           JOptionPane.showMessageDialog(null, "Falta información", "Error", JOptionPane.ERROR_MESSAGE); 
+        } else {
+            JOptionPane.showMessageDialog(null, "Falta información", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton2_GenerarExcelActionPerformed
+
+    private void jComboBox1_salidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1_salidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1_salidaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1_SubirExcel;
     private javax.swing.JButton jButton2_GenerarExcel;
     private javax.swing.JComboBox<String> jComboBox1_Metodos;
+    private javax.swing.JComboBox<String> jComboBox1_salida;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel1_metodos;
     private javax.swing.JLabel jLabel1_numeroProvedores;
     private javax.swing.JLabel jLabel2_CapVehiculo;

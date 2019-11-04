@@ -5,14 +5,14 @@
  */
 package Factory;
 
-import CargaDatosExcel.MetodosCargaExcel;
 import Strategia.MetodosCalculo;
+import CargaDatosExcel.CargaExcel;
 
 /**
  *
  * @author cesard.chacond
  */
 public interface FactoryImplementacion {
-    public boolean inicioLecturaExcel(MetodosCargaExcel metodosExcel);
+    public boolean inicioLecturaExcel(CargaExcel metodosExcel);
     public boolean inicioMetodos(MetodosCalculo a);
 }

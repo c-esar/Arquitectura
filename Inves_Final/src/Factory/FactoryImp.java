@@ -5,10 +5,10 @@
  */
 package Factory;
 
-import CargaDatosExcel.MetodosCargaExcel;
-import CargaDatosExcel.MetodosCargaExcelImp;
+import CargaDatosExcel.CargaExcelImp;
 import Strategia.MetodosCalculo;
 import Strategia.MetodosCalculoDistanciaImp;
+import CargaDatosExcel.CargaExcel;
 
 /**
  *
@@ -17,7 +17,7 @@ import Strategia.MetodosCalculoDistanciaImp;
 public class FactoryImp implements FactoryImplementacion {
 
     @Override
-    public boolean inicioLecturaExcel(MetodosCargaExcel metodosExcel) {
+    public boolean inicioLecturaExcel(CargaExcel metodosExcel) {
         return metodosExcel.IniciarLecturaExcel();
     }
 
