@@ -15,9 +15,6 @@ import java.util.HashMap;
  * @author cesard.chacond
  */
 public interface MetodosCalculo{
-    
-    public AtributosSistema datos = AtributosSistema.getInstance();
-    public MetodosEjecucionImp metodosEjecucion = new MetodosEjecucionImp();
     public boolean InicioProceso();
     public void CrearPuntosArrayList(double[][] Puntos, String dia, int numeroDias);
     public void CompararNodosConCapacidadVehiculo(String dia, Double CapacidadVehiculo, Double Volumen, ArrayList<Double> PesoProvedor, ArrayList<Double> VolumenProvedor);

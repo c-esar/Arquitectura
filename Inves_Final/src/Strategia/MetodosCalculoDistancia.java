@@ -10,7 +10,7 @@ package Strategia;
  *
  * @author cesard.chacond
  */
-public abstract class MetodosCalculoDistancia implements MetodosCalculo{
+public abstract class MetodosCalculoDistancia implements MetodosCalculo, Constantes.Constantes{
     protected boolean CAB = true;
     protected boolean SinAB = true;
 

@@ -13,7 +13,8 @@ public class SalidaCsv extends SalidaInterprete{
 
     @Override
     public boolean salida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Salida CSV");
+        return true;
     }
 
     

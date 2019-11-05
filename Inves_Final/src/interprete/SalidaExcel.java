@@ -22,6 +22,7 @@ public class SalidaExcel extends SalidaInterprete {
 
     @Override
     public boolean salida() {
+        System.out.println("Salida excel");
 //        int filas = -1;
 //        int columnas = -1;
 //        datos = AtributosSistema.getInstance();

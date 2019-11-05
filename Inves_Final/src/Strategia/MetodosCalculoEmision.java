@@ -9,6 +9,6 @@ package Strategia;
  *
  * @author cesard.chacond
  */
-public abstract class MetodosCalculoEmision implements MetodosCalculo{
+public abstract class MetodosCalculoEmision implements MetodosCalculo, Constantes.Constantes{
     
 }

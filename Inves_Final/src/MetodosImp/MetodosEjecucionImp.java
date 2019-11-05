@@ -15,15 +15,13 @@ import java.util.HashMap;
  *
  * @author David
  */
-public class MetodosEjecucionImp implements MetodosEjecucion {
+public class MetodosEjecucionImp implements MetodosEjecucion, Constantes.Constantes{
 
     private ArrayList<ArrayList<Double>> PesosNosuperados; // SinA
     private ArrayList<ArrayList<Double>> PesosNormal; // CA
     private ArrayList<ArrayList<Double>> Aux; // auxiliar
-    private AtributosSistema datos;
     
     public MetodosEjecucionImp(){
-        datos = AtributosSistema.getInstance();
         this.PesosNosuperados = new ArrayList<>();
         this.PesosNormal = new ArrayList<>();
         this.Aux = new ArrayList<>();

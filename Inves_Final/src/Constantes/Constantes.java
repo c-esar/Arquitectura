@@ -1,5 +1,8 @@
 package Constantes;
 
+import MetodosImp.MetodosEjecucionImp;
+import Variables.AtributosSistema;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,6 +14,8 @@ package Constantes;
  */
 public interface Constantes {
 
+    final AtributosSistema datos = AtributosSistema.getInstance();
+    final MetodosEjecucionImp metodosEjecucion = new MetodosEjecucionImp();
     final String Capacidad_Vehiculo = "Capacidad Vehiculo";
     final String Volumen_Vehiculo = "Volumen Vehiculo";
     final String Nodos_Con_Ahorro = "NodosConAhorro";

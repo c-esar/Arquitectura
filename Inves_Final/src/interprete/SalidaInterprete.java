@@ -5,16 +5,14 @@
  */
 package interprete;
 
-import Variables.AtributosSistema;
-
 /**
  *
  * @author David
  */
-public abstract class SalidaInterprete {
+public abstract class SalidaInterprete implements Constantes.Constantes{
+    
     public void interprete(SalidaInterprete salidaInterprete){
         salidaInterprete.salida();
     }
-    public AtributosSistema datos = AtributosSistema.getInstance();
     public abstract boolean salida(); 
 }

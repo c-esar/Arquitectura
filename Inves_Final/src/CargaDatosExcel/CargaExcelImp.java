@@ -27,7 +27,7 @@ import Exception.ExceptionSistema;
  *
  * @author David
  */
-public class CargaExcelImp implements CargaExcel {
+public class CargaExcelImp implements CargaExcel, Constantes {
 
     private String file;
     private FileInputStream files;
@@ -36,11 +36,6 @@ public class CargaExcelImp implements CargaExcel {
     private String nombreVariable;
     private boolean entreProvedores = true;
     private int ContadorDia = 0;
-    private AtributosSistema datos;
-
-    public CargaExcelImp() {
-        datos = AtributosSistema.getInstance();
-    }
 
     @Override
     public boolean IniciarLecturaExcel(String path) {
