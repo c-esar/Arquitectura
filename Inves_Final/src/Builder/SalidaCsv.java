@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interprete;
+package Builder;
+
+import java.util.Arrays;
 
 /**
  *
  * @author David
  */
-public class SalidaCsv extends SalidaInterprete{
+public class SalidaCsv extends SalidaBuilder{
 
     @Override
-    public boolean salida() {
-        System.out.println("Salida CSV");
-        return true;
+    public void salida() {
+        System.out.println(Arrays.toString(datos.getDistancias()));
     }
 
     

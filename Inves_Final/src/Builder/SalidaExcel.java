@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interprete;
+package Builder;
 
 import Variables.AtributosSistema;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -18,11 +19,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author David
  */
-public class SalidaExcel extends SalidaInterprete {
+public class SalidaExcel extends SalidaBuilder {
 
     @Override
-    public boolean salida() {
-        System.out.println("Salida excel");
+    public void salida() {
+        System.out.println(Arrays.toString(datos.getDistancias()));
 //        int filas = -1;
 //        int columnas = -1;
 //        datos = AtributosSistema.getInstance();
@@ -58,7 +59,6 @@ public class SalidaExcel extends SalidaInterprete {
 //        } catch (IOException ex) {
 //
 //        }
-        return false;
     }
 
 }

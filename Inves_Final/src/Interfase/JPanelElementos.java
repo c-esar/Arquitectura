@@ -5,21 +5,21 @@
  */
 package Interfase;
 
+import Builder.DatosDirector;
 import Variables.AtributosSistema;
 import CargaDatosExcel.CargaExcelImp;
 import Factory.FactoryImp;
 import Factory.FactoryImplementacion;
 import Strategia.MetodosCalculoDistanciaImp;
 import Strategia.MetodosCalculoEmisionImp;
-import interprete.Contexto;
-import interprete.SalidaExcel;
-import interprete.SalidaInterprete;
+import Builder.SalidaExcel;
+import Builder.SalidaBuilder;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import CargaDatosExcel.CargaExcel;
-import interprete.SalidaCsv;
+import Builder.SalidaCsv;
 
 /**
  *
@@ -208,19 +208,17 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
 
     private void jButton2_GenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_GenerarExcelActionPerformed
         System.out.println(jComboBox1_Metodos.getSelectedIndex());
-        Contexto context = new Contexto(jComboBox1_salida.getSelectedItem().toString());
-        SalidaInterprete salida;
+        DatosDirector datosDirector = new DatosDirector();
         if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && archivo != null) {
             switch (jComboBox1_Metodos.getSelectedIndex()) {
                 case 0: {
-
                     if (cargaExcel.IniciarLecturaExcel(archivo.getPath())) {
                         if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
-                            switch (context.getSalida()) {
+                            switch (jComboBox1_salida.getSelectedItem().toString()) {
                                 case "Excel": {
                                     try {
-                                        salida = new SalidaExcel();
-                                        salida.interprete(salida);
+                                        datosDirector.setSalidaBuilder(new SalidaExcel());
+                                        datosDirector.creacionSalida();
                                         JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
                                         int input = JOptionPane.showConfirmDialog(null, "Generar nuevo excel", "Información", JOptionPane.INFORMATION_MESSAGE);
                                         switch (input) {
@@ -252,9 +250,9 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                                 }
                                 case "CSV": {
                                     try {
-                                        salida = new SalidaCsv();
-                                        salida.interprete(salida);
-                                        JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                                        datosDirector.setSalidaBuilder(new SalidaCsv());
+                                        datosDirector.creacionSalida();
+                                        JOptionPane.showMessageDialog(null, "CSV generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
                                         int input = JOptionPane.showConfirmDialog(null, "Generar nuevo excel", "Información", JOptionPane.INFORMATION_MESSAGE);
                                         switch (input) {
                                             case 0: {
