@@ -33,7 +33,6 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     private JFileChooser seleccionar = new JFileChooser();
     private File archivo;
     private FactoryImplementacion factoryImp = new FactoryImp();
-    private CargaExcel cargaExcel;
 
     public JPanelElementos() {
         this.setBounds(350, 350, 400, 400);
@@ -41,7 +40,6 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         this.setTitle(tituloDatos);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        cargaExcel = new CargaExcelImp();
         initComponents();
     }
 
@@ -199,6 +197,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         try {
             if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
                 archivo = seleccionar.getSelectedFile();
+                JOptionPane.showMessageDialog(null, "Archivo Cargado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Archivo no reconocido " + e, "Error", JOptionPane.ERROR_MESSAGE);
@@ -212,7 +211,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && archivo != null) {
             switch (jComboBox1_Metodos.getSelectedIndex()) {
                 case 0: {
-                    if (cargaExcel.IniciarLecturaExcel(archivo.getPath())) {
+                    if (factoryImp.inicioMetodos(new CargaExcelImp(archivo.getPath()))) {
                         if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
                             switch (jComboBox1_salida.getSelectedItem().toString()) {
                                 case "Excel": {
@@ -295,7 +294,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                     break;
                 }
                 case 1: {
-                    if (cargaExcel.IniciarLecturaExcel(archivo.getPath())) {
+                    if (true) {
                         if (factoryImp.inicioMetodos(new MetodosCalculoEmisionImp())) {
                             JOptionPane.showMessageDialog(null, "Excel generado", "Exito", JOptionPane.INFORMATION_MESSAGE);
                         } else {

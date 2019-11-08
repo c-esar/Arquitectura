@@ -12,5 +12,5 @@ package CargaDatosExcel;
 public interface CargaExcel {
 
     public boolean Leer();
-    public boolean IniciarLecturaExcel(String path); 
+    public boolean IniciarLecturaExcel(); 
 }

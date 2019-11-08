@@ -1,6 +1,4 @@
 package Constantes;
-
-import MetodosImp.MetodosEjecucionImp;
 import Variables.AtributosSistema;
 
 /*
@@ -15,7 +13,6 @@ import Variables.AtributosSistema;
 public interface Constantes {
 
     final AtributosSistema datos = AtributosSistema.getInstance();
-    final MetodosEjecucionImp metodosEjecucion = new MetodosEjecucionImp();
     final String Capacidad_Vehiculo = "Capacidad Vehiculo";
     final String Volumen_Vehiculo = "Volumen Vehiculo";
     final String Nodos_Con_Ahorro = "NodosConAhorro";

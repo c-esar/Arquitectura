@@ -5,6 +5,8 @@
  */
 package Strategia;
 
+import java.util.ArrayList;
+
 
 /**
  *
@@ -13,7 +15,10 @@ package Strategia;
 public abstract class MetodosCalculoDistancia implements MetodosCalculo, Constantes.Constantes{
     protected boolean CAB = true;
     protected boolean SinAB = true;
-
+    protected ArrayList<ArrayList<Double>> PesosNosuperados; // SinA
+    protected ArrayList<ArrayList<Double>> PesosNormal; // CA
+    protected ArrayList<ArrayList<Double>> Aux; // auxiliar
+    
     public boolean isCAB() {
         return CAB;
     }
@@ -29,5 +34,30 @@ public abstract class MetodosCalculoDistancia implements MetodosCalculo, Constan
     public void setSinAB(boolean SinAB) {
         this.SinAB = SinAB;
     }
+
+    public ArrayList<ArrayList<Double>> getPesosNosuperados() {
+        return PesosNosuperados;
+    }
+
+    public void setPesosNosuperados(ArrayList<ArrayList<Double>> PesosNosuperados) {
+        this.PesosNosuperados = PesosNosuperados;
+    }
+
+    public ArrayList<ArrayList<Double>> getPesosNormal() {
+        return PesosNormal;
+    }
+
+    public void setPesosNormal(ArrayList<ArrayList<Double>> PesosNormal) {
+        this.PesosNormal = PesosNormal;
+    }
+
+    public ArrayList<ArrayList<Double>> getAux() {
+        return Aux;
+    }
+
+    public void setAux(ArrayList<ArrayList<Double>> Aux) {
+        this.Aux = Aux;
+    }
+    
     
 }

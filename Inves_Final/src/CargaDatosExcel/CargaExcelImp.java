@@ -37,10 +37,12 @@ public class CargaExcelImp implements CargaExcel, Constantes {
     private boolean entreProvedores = true;
     private int ContadorDia = 0;
 
+    public CargaExcelImp(String file) {
+        this.file = file;
+    }
     @Override
-    public boolean IniciarLecturaExcel(String path) {
+    public boolean IniciarLecturaExcel() {
         try {
-            file = path;
             VerificarArchivoExcel();
             Leer();
             files.close();

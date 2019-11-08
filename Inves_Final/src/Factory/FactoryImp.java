@@ -8,6 +8,8 @@ package Factory;
 
 import Strategia.MetodosCalculo;
 import CargaDatosExcel.CargaExcel;
+import CargaDatosExcel.CargaExcelImp;
+import Strategia.MetodosCalculoDistanciaImp;
 
 /**
  *
@@ -16,7 +18,12 @@ import CargaDatosExcel.CargaExcel;
 public class FactoryImp implements FactoryImplementacion {
 
     @Override
-    public boolean inicioMetodos(MetodosCalculo calculo) {
-        return calculo.InicioProceso();
+    public boolean inicioMetodos(Object a) {
+        if (a instanceof MetodosCalculoDistanciaImp){
+           return ((MetodosCalculoDistanciaImp) a).InicioProceso(); 
+        } else if (a instanceof CargaExcelImp){
+            return ((CargaExcelImp) a).IniciarLecturaExcel();
+        }  
+        return false;
     }
 }

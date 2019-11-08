@@ -13,5 +13,5 @@ import CargaDatosExcel.CargaExcel;
  * @author cesard.chacond
  */
 public interface FactoryImplementacion {
-    public boolean inicioMetodos(MetodosCalculo a);
+    public boolean inicioMetodos(Object a);
 }
