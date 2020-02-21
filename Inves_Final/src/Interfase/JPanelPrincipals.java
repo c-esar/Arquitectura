@@ -5,6 +5,10 @@
  */
 package Interfase;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
 /**
@@ -23,7 +27,14 @@ public class JPanelPrincipals extends javax.swing.JFrame implements ConstantesIn
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         initComponents();
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("recursos/shopping-list.png"));
+        return retValue;
     }
 
     /**
@@ -39,17 +50,20 @@ public class JPanelPrincipals extends javax.swing.JFrame implements ConstantesIn
         jButton2_salir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
 
-        jButton1_IngresoDatos.setBackground(new java.awt.Color(102, 255, 102));
+        jButton1_IngresoDatos.setBackground(new java.awt.Color(204, 204, 204));
         jButton1_IngresoDatos.setText("Ingreso Datos");
+        jButton1_IngresoDatos.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(153, 255, 153)));
         jButton1_IngresoDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1_IngresoDatosActionPerformed(evt);
             }
         });
 
-        jButton2_salir.setBackground(new java.awt.Color(255, 51, 51));
+        jButton2_salir.setBackground(new java.awt.Color(204, 204, 204));
         jButton2_salir.setText("Salir");
+        jButton2_salir.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(255, 51, 51)));
         jButton2_salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2_salirActionPerformed(evt);
@@ -87,7 +101,7 @@ public class JPanelPrincipals extends javax.swing.JFrame implements ConstantesIn
     }//GEN-LAST:event_jButton1_IngresoDatosActionPerformed
 
     private void jButton2_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_salirActionPerformed
-       dispose();
+        dispose();
     }//GEN-LAST:event_jButton2_salirActionPerformed
 
 

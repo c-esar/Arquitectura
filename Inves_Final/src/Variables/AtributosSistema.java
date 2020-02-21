@@ -18,16 +18,23 @@ public class AtributosSistema {
     private static AtributosSistema metodosCargaAB;
     private int numeroProvedores = 0;
     private HashMap<String, Double> CapVolVehiculo;
-    private HashMap<String, HashMap<String, ArrayList<Double>>> PesoVolProvedores; // <Dia,<peso/vol, provedores>
+    private HashMap<String, HashMap<String, ArrayList<Double>>> PesoVolProvedores; // <Dia,<peso/vol(nombre), provedores(pesoKG)>
     private HashMap<String, HashMap<String, ArrayList<ArrayList<Double>>>> MatrizPuntos;
     private HashMap<String, HashMap<String, ArrayList<ArrayList<Double>>>> ImprimirNodos;
     private HashMap<String, Double> CargaTotalSistema;
     private HashMap<String, HashMap<String, Double>> PesoTotalPorDia; //Para saber si todos los nodos se unen
     private HashMap<String, ArrayList<Integer>> NodosSuperanVehiculo; // el nodo supera la carga del vehiculo
+    private HashMap<String, HashMap<String, ArrayList<Double>>> PesoVolProvedoresTemporal; 
     private ArrayList<Double> Nodos;
     private double[][] distancias;
     private String error;
     private static ArrayList<String> variablesNombresExcel;
+    
+    //nuevo
+    private double CargaMinima; //cargar el numero por pantalla
+    private HashMap<String, HashMap<String, ArrayList<Double>>> NodosCargaMinima; // el nodos que estan por debajo de la carga minima
+    private HashMap<String, ArrayList<Integer>> distanciasNoEvaluar;
+    private boolean entreFunciones; //cuando elo sistema tiene ahorros
 
     static {
         variablesNombresExcel = new ArrayList<>();
@@ -45,6 +52,10 @@ public class AtributosSistema {
         this.ImprimirNodos = new HashMap<>();
         this.CargaTotalSistema = new HashMap<>();
         this.PesoTotalPorDia = new HashMap<>();
+        this.NodosCargaMinima = new HashMap<>();
+        this.PesoVolProvedoresTemporal = this.PesoVolProvedores;
+        this.distanciasNoEvaluar = new HashMap<>();
+        this.entreFunciones = true;
     }
 
     public static AtributosSistema getInstance() {
@@ -162,4 +173,54 @@ public class AtributosSistema {
         this.NodosSuperanVehiculo = NodosSuperanVehiculo;
     }
 
+    public double getCargaMinima() {
+        return CargaMinima;
+    }
+
+    public void setCargaMinima(double CargaMinima) {
+        this.CargaMinima = CargaMinima;
+    }
+
+    public HashMap<String, HashMap<String, ArrayList<Double>>> getNodosCargaMinima() {
+        return NodosCargaMinima;
+    }
+
+    public void setNodosCargaMinima(HashMap<String, HashMap<String, ArrayList<Double>>> NodosCargaMinima) {
+        this.NodosCargaMinima = NodosCargaMinima;
+    }
+
+    public HashMap<String, HashMap<String, ArrayList<Double>>> getPesoVolProvedoresTemporal() {
+        return PesoVolProvedoresTemporal;
+    }
+
+    public void setPesoVolProvedoresTemporal(HashMap<String, HashMap<String, ArrayList<Double>>> PesoVolProvedoresTemporal) {
+        this.PesoVolProvedoresTemporal = PesoVolProvedoresTemporal;
+    }
+
+    public HashMap<String, ArrayList<Integer>> getDistanciasNoEvaluar() {
+        return distanciasNoEvaluar;
+    }
+
+    public void setDistanciasNoEvaluar(HashMap<String, ArrayList<Integer>> distanciasNoEvaluar) {
+        this.distanciasNoEvaluar = distanciasNoEvaluar;
+    }
+
+    @Override
+    public String toString() {
+        return "AtributosSistema{" + "distanciasNoEvaluar=" + distanciasNoEvaluar + '}';
+    }
+
+    public boolean isEntreFunciones() {
+        return entreFunciones;
+    }
+
+    public void setEntreFunciones(boolean entreFunciones) {
+        this.entreFunciones = entreFunciones;
+    }
+
+
+
+    
+    
+    
 }

@@ -23,6 +23,7 @@ public class MetodosCalculoEmisionImp extends MetodosCalculoEmision {
     @Override
     public void CrearPuntosArrayList(double[][] Puntos, String dia, int numeroDias) {
         System.out.println("Strategia.MetodosCalculoEmisionImp.InicioProceso()");
+        
     }
 
     @Override

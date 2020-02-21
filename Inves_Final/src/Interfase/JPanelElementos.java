@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import CargaDatosExcel.CargaExcel;
 import Builder.SalidaCsv;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -42,6 +44,12 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
     }
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("recursos/shopping-list.png"));
+        return retValue;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,7 +71,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         jTextField3_CapVolumen = new javax.swing.JTextField();
         jTextField4_CargaMin = new javax.swing.JTextField();
         jTextField5_ProRuta = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        jTextKilometrosDesviar = new javax.swing.JTextField();
         jButton1_SubirExcel = new javax.swing.JButton();
         jButton2_GenerarExcel = new javax.swing.JButton();
         jComboBox1_Metodos = new javax.swing.JComboBox<>();
@@ -72,6 +80,8 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         jComboBox1_salida = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Carga Información");
+        setIconImage(getIconImage());
 
         jLabel1_numeroProvedores.setText("Numero Provedores:");
 
@@ -83,18 +93,20 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
 
         jLabel5_ProRuta.setText("Provedores por Ruta:");
 
-        jLabel6.setText("jLabel6");
+        jLabel6.setText("Kilometros a desviar");
 
-        jTextField6.setText("jTextField6");
-
+        jButton1_SubirExcel.setIcon(new javax.swing.ImageIcon("H:\\INVESTIGACION\\Proyecto12noviembre\\Arquitectura\\Inves_Final\\Iconos\\excel.png")); // NOI18N
         jButton1_SubirExcel.setText("Subir Excel");
+        jButton1_SubirExcel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(153, 255, 153)));
         jButton1_SubirExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1_SubirExcelActionPerformed(evt);
             }
         });
 
+        jButton2_GenerarExcel.setIcon(new javax.swing.ImageIcon("H:\\INVESTIGACION\\Proyecto12noviembre\\Arquitectura\\Inves_Final\\Iconos\\subir.png")); // NOI18N
         jButton2_GenerarExcel.setText("Generar Excel");
+        jButton2_GenerarExcel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 51, 255)));
         jButton2_GenerarExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2_GenerarExcelActionPerformed(evt);
@@ -102,6 +114,11 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         });
 
         jComboBox1_Metodos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Distancia", "Emision" }));
+        jComboBox1_Metodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1_MetodosActionPerformed(evt);
+            }
+        });
 
         jLabel1_metodos.setText("Seleccionar Metodo");
 
@@ -119,7 +136,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,22 +148,28 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                             .addComponent(jLabel6)
                             .addComponent(jLabel1_metodos)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField1_NumeroProvedores, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(jTextField2_CpaVehiculo)
-                            .addComponent(jTextField3_CapVolumen)
-                            .addComponent(jTextField4_CargaMin)
-                            .addComponent(jTextField5_ProRuta)
-                            .addComponent(jComboBox1_salida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1_Metodos, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextKilometrosDesviar, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                .addComponent(jTextField2_CpaVehiculo)
+                                .addComponent(jTextField3_CapVolumen)
+                                .addComponent(jTextField4_CargaMin)
+                                .addComponent(jTextField5_ProRuta)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(20, 20, 20)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jComboBox1_salida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jComboBox1_Metodos, 0, 138, Short.MAX_VALUE))
+                                    .addContainerGap(22, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jTextField1_NumeroProvedores, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(75, 75, 75)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1_SubirExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2_GenerarExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                            .addComponent(jButton2_GenerarExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                            .addComponent(jButton1_SubirExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +197,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextKilometrosDesviar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1_metodos)
@@ -183,11 +206,11 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jComboBox1_salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1_SubirExcel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2_GenerarExcel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton1_SubirExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2_GenerarExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -206,13 +229,16 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     }//GEN-LAST:event_jButton1_SubirExcelActionPerformed
 
     private void jButton2_GenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_GenerarExcelActionPerformed
+        //carga minima : cuando tiene igual o menor a esa carga minima mensaje centro consolidacion
+        //provedores por ruta: indica el numero maximo de provedores que puede contener una ruta expecifica 
+        //kilometros maximos a desviarse: distacia de punto a punto debe ser menor al valor indicado 
         System.out.println(jComboBox1_Metodos.getSelectedIndex());
         DatosDirector datosDirector = new DatosDirector();
         if (!"".equals(jTextField2_CpaVehiculo.getText()) && !"".equals(jTextField3_CapVolumen.getText()) && archivo != null) {
             switch (jComboBox1_Metodos.getSelectedIndex()) {
                 case 0: {
-                    if (factoryImp.inicioMetodos(new CargaExcelImp(archivo.getPath()))) {
-                        if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText())))) {
+                    if (factoryImp.inicioMetodos(new CargaExcelImp(archivo.getPath(),Integer.parseInt(jTextField1_NumeroProvedores.getText())))) {
+                        if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText()), Double.parseDouble(jTextField4_CargaMin.getText())))) {
                             switch (jComboBox1_salida.getSelectedItem().toString()) {
                                 case "Excel": {
                                     try {
@@ -320,6 +346,10 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1_salidaActionPerformed
 
+    private void jComboBox1_MetodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1_MetodosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1_MetodosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1_SubirExcel;
@@ -339,6 +369,6 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
     private javax.swing.JTextField jTextField3_CapVolumen;
     private javax.swing.JTextField jTextField4_CargaMin;
     private javax.swing.JTextField jTextField5_ProRuta;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextKilometrosDesviar;
     // End of variables declaration//GEN-END:variables
 }

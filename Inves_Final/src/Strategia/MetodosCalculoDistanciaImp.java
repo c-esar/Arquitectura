@@ -14,6 +14,7 @@ import static Constantes.Constantes.Nodos_Superan_Capacidad_Vehiculo;
 import static Constantes.Constantes.Volumen_Vehiculo;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -21,9 +22,10 @@ import java.util.HashMap;
  */
 public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
 
-    public MetodosCalculoDistanciaImp(double Volumen, double Capacidad) {
+    public MetodosCalculoDistanciaImp(double Volumen, double Capacidad, double CargaMinima) {
         datos.getCapVolVehiculo().put(Capacidad_Vehiculo, Capacidad);
         datos.getCapVolVehiculo().put(Volumen_Vehiculo, Volumen);
+        datos.setCargaMinima(CargaMinima);
         PesosNormal = new ArrayList<>();
         PesosNosuperados = new ArrayList<>();
         Aux = new ArrayList<>();
@@ -34,6 +36,7 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
         SacarPesoPorDia();
         String dia = null;
         try {
+
             for (int i = 0; i < datos.getPesoVolProvedores().size(); i++) {
                 dia = "Dia" + String.valueOf(i + 1);
                 System.out.println("Ruta para " + dia);
@@ -44,18 +47,22 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
                     ImprimirResultadoSistema(false, dia);
                 } else {
                     CrearPuntosArrayList(datos.getDistancias(), dia, datos.getPesoVolProvedores().size()); // unir parejas con ahorro
+                    if (datos.isEntreFunciones()) {
+                        CompararNodosConCapacidadVehiculo(dia, datos.getCapVolVehiculo().get(Capacidad_Vehiculo), datos.getCapVolVehiculo().get(Volumen_Vehiculo),
+                                datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
 
-                    CompararNodosConCapacidadVehiculo(dia, datos.getCapVolVehiculo().get(Capacidad_Vehiculo), datos.getCapVolVehiculo().get(Volumen_Vehiculo),
-                            datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
+                        VerificarNodos(dia, datos.getMatrizPuntos().get(dia), datos.getNumeroProvedores(),
+                                datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
 
-                    VerificarNodos(dia, datos.getMatrizPuntos().get(dia), datos.getNumeroProvedores(),
-                            datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
+                        ImprimirResultado(dia, datos.getMatrizPuntos().get(dia), datos.getDistancias(),
+                                datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
 
-                    ImprimirResultado(dia, datos.getMatrizPuntos().get(dia), datos.getDistancias(),
-                            datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
-
-                    ImprimirResultadoSistema(true, dia);
-                    System.out.println("");
+                        ImprimirProvesoresCargaMinima(datos.getDistanciasNoEvaluar(), dia);
+                        ImprimirResultadoSistema(true, dia);
+                        System.out.println("");
+                    } else {
+                        ImprimirResultadoSistema(true, dia);
+                    }
                 }
 
             }
@@ -74,70 +81,86 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
         boolean entreNVS = true;
         try {
             for (int x = 1; x < Puntos.length; x++) {
-                for (int y = x + 1; y < Puntos[x].length; y++) {
-                    if (NSV) {
-                        datos.getNodosSuperanVehiculo().put(dia, new ArrayList<>());
-                        NSV = false;
-                    }
-                    if (datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(x) > datos.getCapVolVehiculo().get(Constantes.Constantes.Capacidad_Vehiculo)) {
-                        for (int z = 0; z < datos.getNodosSuperanVehiculo().get(dia).size(); z++) {
-                            if (datos.getNodosSuperanVehiculo().get(dia).get(z) == x) {
-                                entreNVS = false;
+                if (SacarProvedoresPeso(datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(x), datos.getCargaMinima(), dia)) { // sacar los provedores que esten por debajo de la carga minima) {
+                    for (int y = x + 1; y < Puntos[x].length; y++) {
+                        if (SacarProvedoresPeso(datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(y), datos.getCargaMinima(), dia)) {
+                            if (NSV) {
+                                datos.getNodosSuperanVehiculo().put(dia, new ArrayList<>());
+                                NSV = false;
+                            }
+                            if (datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(x) > datos.getCapVolVehiculo().get(Constantes.Constantes.Capacidad_Vehiculo)) {
+                                for (int z = 0; z < datos.getNodosSuperanVehiculo().get(dia).size(); z++) {
+                                    if (datos.getNodosSuperanVehiculo().get(dia).get(z) == x) {
+                                        entreNVS = false;
+                                        break;
+                                    }
+                                }
+                                if (entreNVS) {
+                                    datos.getNodosSuperanVehiculo().get(dia).add(x);
+                                }
+                                entreNVS = true;
                                 break;
+                            } else if (datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(y) > datos.getCapVolVehiculo().get(Constantes.Constantes.Capacidad_Vehiculo)) {
+                                for (int z = 0; z < datos.getNodosSuperanVehiculo().get(dia).size(); z++) {
+                                    if (datos.getNodosSuperanVehiculo().get(dia).get(z) == y) {
+                                        entreNVS = false;
+                                        break;
+                                    }
+                                }
+                                if (entreNVS) {
+                                    datos.getNodosSuperanVehiculo().get(dia).add(y);
+                                }
+                                entreNVS = true;
+                            } else {
+                                double result = CalcularAhorros(Puntos, x, y);
+                                if (result > 0) {
+                                    if (CAB) {
+                                        CrearListas(datos.getMatrizPuntos(), Nodos_Con_Ahorro, numeroDias, dia);
+                                        CAB = false;
+                                    }
+                                    CA = datos.getMatrizPuntos().get(dia).get(Nodos_Con_Ahorro);
+                                    CA.get(0).add((double) x);
+                                    CA.get(1).add((double) y);
+                                    CA.get(2).add(result);
+                                    datos.getMatrizPuntos().get(dia).put(Nodos_Con_Ahorro, CA);
+                                } else {
+                                    if (SinAB) {
+                                        CrearListas(datos.getMatrizPuntos(), Nodos_Sin_Ahorro, numeroDias, dia);
+                                        SinAB = false;
+                                    }
+                                    SinA = datos.getMatrizPuntos().get(dia).get(Nodos_Sin_Ahorro);
+                                    SinA.get(0).add((double) x);
+                                    SinA.get(1).add((double) y);
+                                    SinA.get(2).add(result);
+                                    datos.getMatrizPuntos().get(dia).put(Nodos_Sin_Ahorro, SinA);
+                                }
                             }
-                        }
-                        if (entreNVS) {
-                            datos.getNodosSuperanVehiculo().get(dia).add(x);
-                        }
-                        entreNVS = true;
-                        break;
-                    } else if (datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(y) > datos.getCapVolVehiculo().get(Constantes.Constantes.Capacidad_Vehiculo)) {
-                        for (int z = 0; z < datos.getNodosSuperanVehiculo().get(dia).size(); z++) {
-                            if (datos.getNodosSuperanVehiculo().get(dia).get(z) == y) {
-                                entreNVS = false;
-                                break;
-                            }
-                        }
-                        if (entreNVS) {
-                            datos.getNodosSuperanVehiculo().get(dia).add(y);
-                        }
-                        entreNVS = true;
-                    } else {
-                        double result = CalcularAhorros(Puntos, x, y);
-                        if (result > 0) {
-                            if (CAB) {
-                                CrearListas(datos.getMatrizPuntos(), Nodos_Con_Ahorro, numeroDias, dia);
-                                CAB = false;
-                            }
-                            CA = datos.getMatrizPuntos().get(dia).get(Nodos_Con_Ahorro);
-                            CA.get(0).add((double) x);
-                            CA.get(1).add((double) y);
-                            CA.get(2).add(result);
-                            datos.getMatrizPuntos().get(dia).put(Nodos_Con_Ahorro, CA);
                         } else {
-                            if (SinAB) {
-                                CrearListas(datos.getMatrizPuntos(), Nodos_Sin_Ahorro, numeroDias, dia);
-                                SinAB = false;
-                            }
-                            SinA = datos.getMatrizPuntos().get(dia).get(Nodos_Sin_Ahorro);
-                            SinA.get(0).add((double) x);
-                            SinA.get(1).add((double) y);
-                            SinA.get(2).add(result);
-                            datos.getMatrizPuntos().get(dia).put(Nodos_Sin_Ahorro, SinA);
+                            GuardarCargasMinimas(y, dia);
                         }
                     }
+                } else {
+                    GuardarCargasMinimas(x, dia);
                 }
+
             }
             CAB = true;
             SinAB = true;
-            System.out.println("Lista de ahorro");
-            System.out.println(datos.getMatrizPuntos().get(dia).get(Nodos_Con_Ahorro)); // cuando queda null no hay ahorro
-            System.out.println(datos.getMatrizPuntos().get(dia).get(Nodos_Sin_Ahorro));
-            System.out.println("");
+            if (datos.getMatrizPuntos().size() == 0) {
+                datos.setEntreFunciones(false);
+            } else {
+                System.out.println("Lista de ahorro");
+                System.out.println(datos.getMatrizPuntos().size() == 0 ? " " : datos.getMatrizPuntos().get(dia).get(Nodos_Con_Ahorro)); // cuando queda null no hay ahorro
+                System.out.println(datos.getMatrizPuntos().size() == 0 ? " " : datos.getMatrizPuntos().get(dia).get(Nodos_Sin_Ahorro));
+                System.out.println("");
+                datos.setEntreFunciones(true);
+            }
+
         } catch (Exception e) {
             AtributosSistema.getInstance().setError("1");
 
         }
+
     }
 
     @Override
@@ -324,8 +347,7 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
         if (CA != null) {
             CrearListas();
             for (int x = 0; x < CA.get(0).size(); x++) {
-                boolean a = CalcularPeso(PesoProvedor.get(CA.get(0).get(x).intValue()),
-                        PesoProvedor.get(CA.get(1).get(x).intValue()), CapacidadVehiculo);
+                boolean a = CalcularPeso(PesoProvedor.get(CA.get(0).get(x).intValue()), PesoProvedor.get(CA.get(1).get(x).intValue()), CapacidadVehiculo);
                 boolean b = CalcularVolumen(VolumenProvedor.get(CA.get(0).get(x).intValue()),
                         VolumenProvedor.get(CA.get(1).get(x).intValue()), Volumen);
                 if (a == false || b == false) {
@@ -422,11 +444,14 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
             } else {
                 count = -1;
                 for (int i = 1; i <= numeroProvedores; i++) {
-                    PesosNosuperados.add(new ArrayList<>());
-                    count += 1;
-                    PesosNosuperados.get(count).add((double) i);
-                    PesosNosuperados.get(count).add(Peso.get(i)); //Obtener el peso del punto
-                    PesosNosuperados.get(count).add(Volumen.get(i)); // OBtener el Volumen del punto
+                    if (SacarProvedoresPeso(datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg).get(i), datos.getCargaMinima(), dia)) {
+                        PesosNosuperados.add(new ArrayList<>());
+                        count += 1;
+                        PesosNosuperados.get(count).add((double) i);
+                        PesosNosuperados.get(count).add(Peso.get(i)); //Obtener el peso del punto
+                        PesosNosuperados.get(count).add(Volumen.get(i)); // OBtener el Volumen del punto
+                    }
+
                 }
                 datos.getMatrizPuntos().get(dia).put(Nodos_Directos, PesosNosuperados);
                 datos.getMatrizPuntos().get(dia).put(Nodos_Con_Ahorro, PesosNormal);
@@ -483,7 +508,7 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
 
         for (int i = 0; i < datos.getImprimirNodos().get(dia).get(Nodos_Con_Ahorro).size(); i++) {
             System.out.println(
-                    " Posicion " + datos.getImprimirNodos().get(dia).get(Nodos_Con_Ahorro).get(i).get(0).intValue()
+                    " Posicion " + (datos.getImprimirNodos().get(dia).get(Nodos_Con_Ahorro).get(i).get(0).intValue())
                     + " a " + datos.getImprimirNodos().get(dia).get(Nodos_Con_Ahorro).get(i).get(1).intValue()
                     + " Ahorro Nodos: " + datos.getImprimirNodos().get(dia).get(Nodos_Con_Ahorro).get(i).get(2)
                     + " Peso Nodos: " + datos.getImprimirNodos().get(dia).get(Nodos_Con_Ahorro).get(i).get(3).intValue()
@@ -498,7 +523,7 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
 
         for (int i = 0; i < datos.getImprimirNodos().get(dia).get(Nodos_Directos).size(); i++) {
             System.out.println(
-                    " Posición Directa " + datos.getImprimirNodos().get(dia).get(Nodos_Directos).get(i).get(0).intValue()
+                    " Posición Directa " + (datos.getImprimirNodos().get(dia).get(Nodos_Directos).get(i).get(0).intValue())
                     + " a posición 0 "
                     + " Peso Nodo: " + datos.getImprimirNodos().get(dia).get(Nodos_Directos).get(i).get(1).intValue()
                     + " Volumen Nodos: " + datos.getImprimirNodos().get(dia).get(Nodos_Directos).get(i).get(2).intValue()
@@ -654,5 +679,41 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
 
     public double retornarDistanciaCero(int pos) {
         return datos.getDistancias()[0][pos];
+    }
+
+    private void ImprimirProvesoresCargaMinima(HashMap<String, ArrayList<Integer>> distanciasNoEvaluar, String dia) {
+        if (datos.getDistanciasNoEvaluar().containsKey(dia)) {
+            for (int i = 0; i < distanciasNoEvaluar.get(dia).size(); i++) {
+                System.out.println("Puntos No evaluar son: " + distanciasNoEvaluar.get(dia).get(i) + " Carga por debajo del minimo");
+            }
+        }
+
+    }
+
+    private boolean SacarProvedoresPeso(Double get, double cargaMinima, String dia) {
+        if (get < cargaMinima) {
+            return false;
+        }
+        return true;
+    }
+
+    private void GuardarCargasMinimas(int x, String dia) {
+        boolean tmp = false;
+        if (!datos.getDistanciasNoEvaluar().isEmpty()) {
+            for (int i = 0; i < datos.getDistanciasNoEvaluar().get(dia).size(); i++) {
+                if (datos.getDistanciasNoEvaluar().get(dia).get(i) == x) {
+                    tmp = false;
+                    break;
+                } else {
+                    tmp = true;
+                }
+            }
+            if (tmp) {
+                datos.getDistanciasNoEvaluar().get(dia).add(x);
+            }
+        } else {
+            datos.getDistanciasNoEvaluar().put(dia, new ArrayList<>());
+            datos.getDistanciasNoEvaluar().get(dia).add(x);
+        }
     }
 }

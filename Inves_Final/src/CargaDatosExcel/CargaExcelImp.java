@@ -37,16 +37,23 @@ public class CargaExcelImp implements CargaExcel, Constantes {
     private boolean entreProvedores = true;
     private int ContadorDia = 0;
 
-    public CargaExcelImp(String file) {
+    public CargaExcelImp(String file, int numeroProvedores) {
         this.file = file;
+        this.datos.setNumeroProvedores(numeroProvedores);
     }
+
     @Override
     public boolean IniciarLecturaExcel() {
         try {
             VerificarArchivoExcel();
-            Leer();
-            files.close();
-            return true;
+            if (Leer()) {
+                files.close();
+                return true;
+            } else {
+                files.close();
+                return false;
+            }
+
         } catch (Exception e) {
             return false;
         }
@@ -74,8 +81,11 @@ public class CargaExcelImp implements CargaExcel, Constantes {
         for (int x = 1; x <= numFilas; x++) {
             Row fila = sheet.getRow(x);
             int numCols = fila.getLastCellNum();
-            if (datos.getNumeroProvedores() == 0 && x == 1) {
-                datos.setNumeroProvedores(numCols - 3);
+            if (x == 1) {
+                if (!(datos.getNumeroProvedores() == (numCols - 3))) {
+                    System.out.println("Los provedores no coindicen");
+                    return false;
+                }
             }
             ArrayList<Double> a = new ArrayList<>();
             for (int y = 0, j = 0; y < numCols; y++) {
