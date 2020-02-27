@@ -238,7 +238,7 @@ public class JPanelElementos extends javax.swing.JFrame implements ConstantesInt
             switch (jComboBox1_Metodos.getSelectedIndex()) {
                 case 0: {
                     if (factoryImp.inicioMetodos(new CargaExcelImp(archivo.getPath(),Integer.parseInt(jTextField1_NumeroProvedores.getText())))) {
-                        if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText()), Double.parseDouble(jTextField4_CargaMin.getText())))) {
+                        if (factoryImp.inicioMetodos(new MetodosCalculoDistanciaImp(Double.parseDouble(jTextField3_CapVolumen.getText()), Double.parseDouble(jTextField2_CpaVehiculo.getText()), Double.parseDouble(jTextField4_CargaMin.getText()), Double.parseDouble(jTextField5_ProRuta.getText())))) {
                             switch (jComboBox1_salida.getSelectedItem().toString()) {
                                 case "Excel": {
                                     try {

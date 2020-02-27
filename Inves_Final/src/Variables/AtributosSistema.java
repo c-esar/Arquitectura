@@ -32,9 +32,11 @@ public class AtributosSistema {
     
     //nuevo
     private double CargaMinima; //cargar el numero por pantalla
+    private double ProvedoresPorRuta;
     private HashMap<String, HashMap<String, ArrayList<Double>>> NodosCargaMinima; // el nodos que estan por debajo de la carga minima
     private HashMap<String, ArrayList<Integer>> distanciasNoEvaluar;
     private boolean entreFunciones; //cuando elo sistema tiene ahorros
+    private HashMap<String, HashMap<String, ArrayList<ArrayList<Double>>>> MatrizPuntosProvedoresPorRuta; //cuando hay mas provedores por ruta
 
     static {
         variablesNombresExcel = new ArrayList<>();
@@ -56,6 +58,7 @@ public class AtributosSistema {
         this.PesoVolProvedoresTemporal = this.PesoVolProvedores;
         this.distanciasNoEvaluar = new HashMap<>();
         this.entreFunciones = true;
+        this.MatrizPuntosProvedoresPorRuta = new HashMap<>();
     }
 
     public static AtributosSistema getInstance() {
@@ -218,9 +221,20 @@ public class AtributosSistema {
         this.entreFunciones = entreFunciones;
     }
 
+    public double getProvedoresPorRuta() {
+        return ProvedoresPorRuta;
+    }
 
+    public void setProvedoresPorRuta(double ProvedoresPorRuta) {
+        this.ProvedoresPorRuta = ProvedoresPorRuta;
+    }
 
-    
-    
+    public HashMap<String, HashMap<String, ArrayList<ArrayList<Double>>>> getMatrizPuntosProvedoresPorRuta() {
+        return MatrizPuntosProvedoresPorRuta;
+    }
+
+    public void setMatrizPuntosProvedoresPorRuta(HashMap<String, HashMap<String, ArrayList<ArrayList<Double>>>> MatrizPuntosProvedoresPorRuta) {
+        this.MatrizPuntosProvedoresPorRuta = MatrizPuntosProvedoresPorRuta;
+    }    
     
 }

@@ -22,10 +22,14 @@ import java.util.List;
  */
 public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
 
-    public MetodosCalculoDistanciaImp(double Volumen, double Capacidad, double CargaMinima) {
+    public int tmpX = 0;
+    public int tmpY = 0;
+
+    public MetodosCalculoDistanciaImp(double Volumen, double Capacidad, double CargaMinima, double ProRuta) {
         datos.getCapVolVehiculo().put(Capacidad_Vehiculo, Capacidad);
         datos.getCapVolVehiculo().put(Volumen_Vehiculo, Volumen);
         datos.setCargaMinima(CargaMinima);
+        datos.setProvedoresPorRuta(ProRuta);
         PesosNormal = new ArrayList<>();
         PesosNosuperados = new ArrayList<>();
         Aux = new ArrayList<>();
@@ -54,6 +58,9 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
                         VerificarNodos(dia, datos.getMatrizPuntos().get(dia), datos.getNumeroProvedores(),
                                 datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
 
+                        MetodoProvedoresPorRuta(datos.getProvedoresPorRuta(), datos.getMatrizPuntos().get(dia).get(Nodos_Con_Ahorro), datos.getDistancias(),
+                                datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen),
+                                datos.getCapVolVehiculo().get(Capacidad_Vehiculo), datos.getCapVolVehiculo().get(Volumen_Vehiculo));
                         ImprimirResultado(dia, datos.getMatrizPuntos().get(dia), datos.getDistancias(),
                                 datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Demanda_kg), datos.getPesoVolProvedores().get(dia).get(Constantes.Constantes.Volumen));
 
@@ -404,7 +411,7 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
                         if (entre) {
                             PesosNosuperados.add(new ArrayList<>());
                             count += 1;
-                            PesosNosuperados.get(count).add((double) i);
+                            PesosNosuperados.get(count).add((double) i); // provedor
                             PesosNosuperados.get(count).add(Peso.get(i)); //Obtener el peso del punto
                             PesosNosuperados.get(count).add(Volumen.get(i)); // OBtener el Volumen del punto
                             //entre = false;  
@@ -715,5 +722,72 @@ public class MetodosCalculoDistanciaImp extends MetodosCalculoDistancia {
             datos.getDistanciasNoEvaluar().put(dia, new ArrayList<>());
             datos.getDistanciasNoEvaluar().get(dia).add(x);
         }
+    }
+
+    private void MetodoProvedoresPorRuta(double provedoresPorRuta, ArrayList<ArrayList<Double>> ahorroNodos, double[][] puntos, ArrayList<Double> PesoProvedor, ArrayList<Double> VolumenProvedor, Double CapacidadVehiculo, Double CapacidadVolumen) {
+        boolean result = false;
+        if (ahorroNodos.get(0).size() > 1) {
+            for (int i = 0; i < ahorroNodos.size(); i++) {
+                if (ahorroNodos.size() >= (i + 1)) {
+                    do {
+                        if (tmpY == 2) {
+                            tmpX = 1;
+                            tmpY = 0;
+                        } else if (tmpX == 1 && tmpY == 2) {
+                            break;
+                        }
+                        result = CalcularAhorrosFinal(puntos, ahorroNodos.get(i).get(tmpX).intValue(), ahorroNodos.get(i + 1).get(tmpY).intValue());
+
+                    } while (result);
+
+                    if (result) {
+                        boolean a = CalcularPeso(PesoProvedor.get(ahorroNodos.get(i).get(tmpX).intValue()), PesoProvedor.get(ahorroNodos.get(i + 1).get(tmpY).intValue()), CapacidadVehiculo);
+                        boolean b = CalcularVolumen(VolumenProvedor.get(ahorroNodos.get(i).get(tmpX).intValue()),
+                                VolumenProvedor.get(ahorroNodos.get(i + 1).get(tmpY).intValue()), CapacidadVolumen);
+                        if (a) {
+                            boolean c = CalcularPesoRuta(PesoProvedor, ahorroNodos, i, CapacidadVehiculo);
+                            if(c){
+                                System.out.println("retorno falso");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    //verificar si los a unir estan por debajo del peso
+    private boolean CalcularPesoRuta(ArrayList<Double> PesoProvedor, ArrayList<ArrayList<Double>> ahorroNodos, int i, Double CapacidadVehiculo) {
+        double tmp = 0;
+        boolean result = true;
+        int peso = 0;
+        int tmpX1 = 0;
+        int tmpY1 = 0;
+        do {
+            if (tmpY1 == 2) {
+                tmpX1 = 1;
+                tmpY1 = 0;
+            } else if (tmpX1 == 1 && tmpY1 == 2) {
+                result = false;
+                break;
+            }
+            peso += ahorroNodos.get(i).get(tmpX1).intValue() + ahorroNodos.get(i + 1).get(tmpY1).intValue();
+            tmpY1=+1;
+        } while (result);
+        if(peso <= CapacidadVehiculo){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+
+    private boolean CalcularAhorrosFinal(double[][] distancia, int PuntoX, int PuntoY) {
+        int I = (int) PuntoX;
+        int J = (int) PuntoY;
+        double result = distancia[J][0] - distancia[I][J];
+        tmpY =+1;
+        return (result > 0);
     }
 }
